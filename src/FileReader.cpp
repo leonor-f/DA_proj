@@ -1,7 +1,6 @@
 #include "FileReader.h"
 
-FileReader::FileReader(const std::string &fName) {
-    file_.open(fName);
+FileReader::FileReader() {
 }
 
 std::vector<std::vector<std::string>> FileReader::getData() {
@@ -24,4 +23,8 @@ std::vector<std::vector<std::string>> FileReader::getData() {
         data_.push_back(v);
     }
     return data_;
+}
+
+void FileReader::setFile(std::string file) {
+    file_.open(file);
 }

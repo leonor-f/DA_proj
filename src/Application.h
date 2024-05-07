@@ -5,4 +5,18 @@
 #ifndef PROJ2_APPLICATION_H
 #define PROJ2_APPLICATION_H
 
+#include <string>
+
+enum DATASET {
+    SHIPPING,
+    STADIUMS,
+    TOURISM,
+};
+
+class Application {
+
+public:
+    Application(DATASET mode);
+};
+
 #endif //PROJ2_APPLICATION_H

@@ -19,13 +19,15 @@ public:
      * @brief Constructor for the FileReader class.
      * @param fName The name of the file to be opened for reading.
      */
-    FileReader(const std::string &fName);
+    FileReader();
 
     /**
      * @brief Get the data read from the file.
      * @return Vector of vectors containing the read data, where each inner vector represents a row of strings.
      */
     std::vector<std::vector<std::string>> getData();
+
+    void setFile(std::string file);
 };
 
 #endif //PROJ2_FILEREADER_H

@@ -10,4 +10,6 @@ add_executable(src main.cpp
         Graph.h
         Application.cpp
         Application.h
+        NetworkPoint.cpp
+        NetworkPoint.h
 )
