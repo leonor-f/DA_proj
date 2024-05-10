@@ -8,7 +8,7 @@
 #include "FileReader.h"
 
 int main() {
-    //Application a;
+    Application a(SHIPPING);
 
     return 0;
 }

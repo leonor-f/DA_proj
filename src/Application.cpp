@@ -6,6 +6,9 @@
 
 #include "FileReader.h"
 #include <iostream>
+#include <unordered_map>
+
+#include "NetworkPoint.h"
 
 using namespace std;
 
@@ -13,19 +16,24 @@ Application::Application(DATASET mode) {
     FileReader file;
     switch (mode) {
         case SHIPPING:
-            file.setFile("../dataset/Toy-Graphs/shipping.csv");
+            file.setFile("../../dataset/Toy-Graphs/shipping.csv");
             break;
         case STADIUMS:
-            file.setFile("../dataset/Toy-Graphs/shipping.csv");
+            file.setFile("../../dataset/Toy-Graphs/shipping.csv");
             break;
         case TOURISM:
-            file.setFile("../dataset/Toy-Graphs/shipping.csv");
+            file.setFile("../../dataset/Toy-Graphs/shipping.csv");
             break;
         default:
             return;
     }
 
     auto data = file.getData();
-
+    for (const auto &d : data) {
+        for (const auto &s : d) {
+            std::cout << s << " ";
+        }
+        std::cout <<std::endl;
+    }
 
 }

@@ -10,6 +10,7 @@ class NetworkPoint {
     unsigned id_;
 public:
     NetworkPoint(unsigned id);
+    unsigned getId() const;
 
 };
 
