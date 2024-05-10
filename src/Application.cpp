@@ -29,7 +29,7 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
     return earthradius * c;
 }
 
-void Application::fullyConnectMediumGraph() {
+void Application::fullyConnectGraph() {
     for (const auto &p : network_->getVertexSet()) {
         auto point1 = p.second->getInfo();
         for (const auto &pp : network_->getVertexSet()) {
@@ -293,6 +293,5 @@ void Application::loadRealGraph() {
         network_->addEdge(source, dest, std::stod(line.at(2)));
     }
 
-    cout << "sucess";
     menu();
 }

@@ -10,10 +10,7 @@ class Application {
     Graph *network_ = new Graph;
     FileReader file;
     FileReader nodes;
-    void eraseNetwork();
-    void fullyConnectMediumGraph();
-    void fullyConnectRealGraph();
-
+    void fullyConnectGraph();
 
 public:
     Application();
