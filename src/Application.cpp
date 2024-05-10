@@ -1,13 +1,13 @@
-//
-// Created by leono on 01/05/2024.
-//
-
 #include "Application.h"
 
 #include "FileReader.h"
 #include <iostream>
+#include <unordered_map>
+
+#include "NetworkPoint.h"
 
 using namespace std;
+
 
 Application::Application() {
     menu();
@@ -75,13 +75,11 @@ void Application::loadData() {
         string sel;
         switch (choice) {
             case 1:
-
+                loadToyGraph();
                 break;
             case 2:
-
                 break;
             case 3:
-
                 break;
             case 0:
                 menu();
@@ -115,4 +113,71 @@ void Application::goBack() {
     cout << endl << "---------------------------" << endl << "Press ENTER to go back." << endl
          << "---------------------------" << endl;
     menu();
+}
+
+void Application::loadToyGraph() {
+    int choice;
+    FileReader file;
+
+    vector<vector<string>> data;
+
+    do {
+        cout << endl;
+        cout << "1. Shipping" << endl;
+        cout << "2. Stadiums" << endl;
+        cout << "3. Tourism" << endl << endl;
+
+        cout << "0. Go back" << endl << endl;
+        cout << "Enter your choice and press ENTER: ";
+        cin >> choice;
+
+        string sel;
+        switch (choice) {
+            case 1:
+                file.setFile("../../dataset/Toy-Graphs/shipping.csv");
+                data = file.getData();
+
+                for (const auto &line : data) {
+                    NetworkPoint source(std::stoi(line.at(0)));
+                    NetworkPoint dest(std::stoi(line.at(1)));
+
+                    network_.addVertex(source);
+                    network_.addVertex(dest);
+                    network_.addEdge(source, dest, std::stod(line.at(2)));
+                }
+                menu();
+                break;
+            case 2:
+                file.setFile("../../dataset/Toy-Graphs/stadiums.csv");
+                data = file.getData();
+
+                for (const auto &line : data) {
+                    NetworkPoint source(std::stoi(line.at(0)));
+                    NetworkPoint dest(std::stoi(line.at(1)));
+
+                    network_.addVertex(source);
+                    network_.addVertex(dest);
+                    network_.addEdge(source, dest, std::stod(line.at(2)));
+                }
+                menu();
+                break;
+            case 3:
+                file.setFile("../../dataset/Toy-Graphs/tourism.csv");
+                data = file.getData();
+
+                for (const auto &line : data) {
+                    NetworkPoint source(std::stoi(line.at(0)));
+                    NetworkPoint dest(std::stoi(line.at(1)));
+
+                    network_.addVertex(source);
+                    network_.addVertex(dest);
+                    network_.addEdge(source, dest, std::stod(line.at(2)));
+                }
+                menu();
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    } while (choice != 0);
+
 }
