@@ -11,6 +11,7 @@ class NetworkPoint {
 public:
     NetworkPoint(unsigned id);
     unsigned getId() const;
+    bool operator==(const NetworkPoint &other);
 
 };
 

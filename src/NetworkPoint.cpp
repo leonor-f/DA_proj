@@ -11,3 +11,7 @@ NetworkPoint::NetworkPoint(unsigned int id) {
 unsigned NetworkPoint::getId() const {
     return id_;
 }
+
+bool NetworkPoint::operator==(const NetworkPoint &other) {
+    return this->id_ == other.id_;
+}

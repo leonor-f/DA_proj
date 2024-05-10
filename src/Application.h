@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "Graph.h"
+
 enum DATASET {
     SHIPPING,
     STADIUMS,
@@ -14,6 +16,7 @@ enum DATASET {
 };
 
 class Application {
+    Graph network_;
 
 public:
     Application(DATASET mode);
