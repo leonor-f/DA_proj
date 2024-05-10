@@ -5,7 +5,9 @@
 #include "Graph.h"
 
 class Application {
-    Graph network_;
+    Graph *network_ = new Graph;
+    void eraseNetwork();
+
 
 public:
     Application();
@@ -17,6 +19,8 @@ public:
     void realWorld(std::string c);
     void goBack();
     void loadToyGraph();
+    void loadMediumGraph();
+    void loadRealGraph();
 };
 
 #endif //PROJ2_APPLICATION_H

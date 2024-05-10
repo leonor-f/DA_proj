@@ -27,7 +27,7 @@ public:
      */
     std::vector<std::vector<std::string>> getData();
 
-    void setFile(std::string file);
+    bool setFile(std::string file);
 };
 
 #endif //PROJ2_FILEREADER_H

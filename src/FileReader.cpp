@@ -25,6 +25,10 @@ std::vector<std::vector<std::string>> FileReader::getData() {
     return data_;
 }
 
-void FileReader::setFile(std::string file) {
+bool FileReader::setFile(std::string file) {
     file_.open(file);
+    if (file_.fail()) {
+        return false;
+    }
+    return true;
 }
