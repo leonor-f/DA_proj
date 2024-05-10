@@ -52,7 +52,7 @@ void Application::menu() {
                 break;
             case 0:
                 cout << "Exiting program. Goodbye!" << endl;
-                break;
+                exit(EXIT_SUCCESS);
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }

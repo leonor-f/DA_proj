@@ -8,7 +8,7 @@
 #include "FileReader.h"
 
 int main() {
-    Application a(TOURISM);
+    Application a;
 
     return 0;
 }
