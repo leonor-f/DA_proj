@@ -1,6 +1,5 @@
 #include "Application.h"
 
-#include "FileReader.h"
 #include <iostream>
 #include <unordered_map>
 #include <cmath>
@@ -28,6 +27,36 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
     const double earthradius = 6371000.0; // in meters
 
     return earthradius * c;
+}
+
+void Application::fullyConnectMediumGraph() {
+    for (const auto &p : network_->getVertexSet()) {
+        auto point1 = p.second->getInfo();
+        for (const auto &pp : network_->getVertexSet()) {
+            auto point2 = pp.second->getInfo();
+            if (point1 == point2) continue;
+
+            bool edgeExists = false;
+
+            // Check if there is already an edge between point1 and point2
+            for (const auto &edge : p.second->getAdj()) {
+                if (edge->getDest()->getInfo() == point2) {
+                    edgeExists = true;
+                    break;
+                }
+            }
+
+            if (!edgeExists) {
+                // Calculate distance between point1 and point2
+                auto point1Coords = nodes.getCoordinates(point1.getId());
+                auto point2Coords = nodes.getCoordinates(point2.getId());
+                double distance = haversine(point1Coords.first, point1Coords.second, point2Coords.first, point2Coords.second);
+
+                // Add edge between point1 and point2
+                network_->addEdge(point1, point2, distance);
+            }
+        }
+    }
 }
 
 Application::Application() {
@@ -146,7 +175,6 @@ void Application::goBack() {
 
 void Application::loadToyGraph() {
     int choice;
-    FileReader file;
 
     vector<vector<string>> data;
 
@@ -163,7 +191,7 @@ void Application::loadToyGraph() {
         string sel;
         switch (choice) {
             case 1:
-                file.setFile("../../dataset/Toy-Graphs/shipping.csv");
+                file.setFile("../../dataset/Toy-Graphs/shipping.csv", true);
                 data = file.getData();
 
                 for (const auto &line : data) {
@@ -177,7 +205,7 @@ void Application::loadToyGraph() {
                 menu();
                 break;
             case 2:
-                file.setFile("../../dataset/Toy-Graphs/stadiums.csv");
+                file.setFile("../../dataset/Toy-Graphs/stadiums.csv", true);
                 data = file.getData();
 
                 for (const auto &line : data) {
@@ -191,7 +219,7 @@ void Application::loadToyGraph() {
                 menu();
                 break;
             case 3:
-                file.setFile("../../dataset/Toy-Graphs/tourism.csv");
+                file.setFile("../../dataset/Toy-Graphs/tourism.csv", true);
                 data = file.getData();
 
                 for (const auto &line : data) {
@@ -213,7 +241,6 @@ void Application::loadToyGraph() {
 
 void Application::loadMediumGraph() {
     int choice;
-    FileReader file;
 
     vector<vector<string>> data;
 
@@ -221,10 +248,11 @@ void Application::loadMediumGraph() {
     cout << "\nEnter the number of edges:";
     cin >> choice;
 
-    if (!file.setFile("../../dataset/Extra_Fully_Connected_Graphs/edges_" + to_string(choice) + ".csv")) {
+    if (!file.setFile("../../dataset/Extra_Fully_Connected_Graphs/edges_" + to_string(choice) + ".csv", false)) {
         cout << "File does not exist.\n";
         return;
     };
+    nodes.setFile("../../dataset/Extra_Fully_Connected_Graphs/nodes.csv", true);
     data = file.getData();
 
     for (const auto &line : data) {
@@ -233,16 +261,23 @@ void Application::loadMediumGraph() {
 
         network_->addVertex(source);
         network_->addVertex(dest);
-        network_->addEdge(source, dest, std::stod(line.at(2)));
+        network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
     }
 
-    cout << "sucess";
+    int cnt = 0;
+
+    fullyConnectMediumGraph();
+    for (const auto &p : network_->getVertexSet()) {
+        for (const auto &e : p.second->getAdj()) {
+            ++cnt;
+        }
+    }
+    std::cout << "there are " << cnt << "edges\n";
     menu();
 }
 
 void Application::loadRealGraph() {
     int choice;
-    FileReader file;
 
     vector<vector<string>> data;
 
@@ -250,10 +285,12 @@ void Application::loadRealGraph() {
     cout << "\n Select the graph:";
     cin >> choice;
 
-    if (!file.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/edges.csv")) {
+    if (!file.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/edges.csv", true)) {
         cout << "File does not exist.\n";
         return;
     }
+
+    nodes.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/nodes.csv", true);
 
     data = file.getData();
 

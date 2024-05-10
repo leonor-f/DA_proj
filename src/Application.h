@@ -2,11 +2,17 @@
 #define PROJ2_APPLICATION_H
 
 #include <string>
+
+#include "FileReader.h"
 #include "Graph.h"
 
 class Application {
     Graph *network_ = new Graph;
+    FileReader file;
+    FileReader nodes;
     void eraseNetwork();
+    void fullyConnectMediumGraph();
+    void fullyConnectRealGraph();
 
 
 public:
