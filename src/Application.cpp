@@ -261,18 +261,8 @@ void Application::loadMediumGraph() {
 
         network_->addVertex(source);
         network_->addVertex(dest);
-        network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
+        network_->addEdge(source, dest, std::stod(line.at(2)));
     }
-
-    int cnt = 0;
-
-    fullyConnectMediumGraph();
-    for (const auto &p : network_->getVertexSet()) {
-        for (const auto &e : p.second->getAdj()) {
-            ++cnt;
-        }
-    }
-    std::cout << "there are " << cnt << "edges\n";
     menu();
 }
 
