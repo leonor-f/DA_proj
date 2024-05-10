@@ -2,10 +2,15 @@
 #define PROJ2_APPLICATION_H
 
 #include <string>
+
+#include "FileReader.h"
 #include "Graph.h"
 
 class Application {
-    Graph network_;
+    Graph *network_ = new Graph;
+    FileReader file;
+    FileReader nodes;
+    void fullyConnectGraph();
 
 public:
     Application();
@@ -17,6 +22,8 @@ public:
     void realWorld(std::string c);
     void goBack();
     void loadToyGraph();
+    void loadMediumGraph();
+    void loadRealGraph();
 };
 
 #endif //PROJ2_APPLICATION_H

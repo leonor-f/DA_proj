@@ -269,8 +269,10 @@ bool Graph::removeVertex(const NetworkPoint &in) {
 bool Graph::addEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w) {
     auto v1 = findVertex(sourc);
     auto v2 = findVertex(dest);
-    if (v1 == nullptr || v2 == nullptr)
+    if (v1 == nullptr || v2 == nullptr) {
+        std::cout << "nullptr\n";
         return false;
+    }
     v1->addEdge(v2, w);
     return true;
 }

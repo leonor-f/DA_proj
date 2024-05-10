@@ -13,6 +13,7 @@
 class FileReader {
     std::ifstream file_; ///< Input file stream for reading data.
     std::vector<std::vector<std::string>> data_; ///< Vector of vectors to store the read data.
+    bool ignoreFirstLine;
 
 public:
     /**
@@ -27,7 +28,9 @@ public:
      */
     std::vector<std::vector<std::string>> getData();
 
-    void setFile(std::string file);
+    bool setFile(std::string file, bool ignore);
+
+    std::pair<double, double> getCoordinates(unsigned id);
 };
 
 #endif //PROJ2_FILEREADER_H
