@@ -60,4 +60,6 @@ std::pair<double, double> FileReader::getCoordinates(unsigned id) {
         }
     }
 
+    return res;
+
 }

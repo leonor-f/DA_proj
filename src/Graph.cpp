@@ -495,6 +495,115 @@ std::vector<NetworkPoint> Graph::topsort() const {
     return res;
 }
 
+void preOrderTraversal(Graph &MST, Vertex<NetworkPoint> *current, std::vector<NetworkPoint> &L) {
+    if (current == nullptr)
+        return;
+
+    L.push_back(current->getInfo());
+    for (const auto &edge : current->getAdj()) {
+        if (L.size() == 1 || L[L.size() - 2].getId() != edge->getDest()->getInfo().getId()) {
+            preOrderTraversal(MST, edge->getDest(), L);
+        }
+    }
+}
+
+std::vector<NetworkPoint> Graph::aproxTSP() {
+    auto root = vertexSet.begin()->second;
+    std::unordered_set<unsigned> visited;
+    std::vector<NetworkPoint> tour;
+
+    Graph mst = computeMST(root);
+
+    auto mst_root = mst.findVertex(root->getInfo());
+
+    std::vector<NetworkPoint> l;
+
+    preOrderTraversal(mst, mst_root, l);
+
+    for (const auto &vertex : l) {
+        if (visited.find(vertex.getId()) == visited.end()) {
+            tour.push_back(vertex);
+            visited.insert(vertex.getId());
+        }
+    }
+
+    return tour;
+
+}
+
+struct EdgeComparator {
+    bool operator()(const Edge<NetworkPoint>* lhs, const Edge<NetworkPoint>* rhs) const {
+        // Compare edges based on their weights
+        return lhs->getWeight() > rhs->getWeight();
+    }
+};
+
+//this function is working as intended
+Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
+    Graph MST;
+
+    if (root == nullptr)
+        return MST;
+
+    std::priority_queue<Edge<NetworkPoint>*, std::vector<Edge<NetworkPoint>*>, EdgeComparator> pq;
+
+    // Set to track visited vertices
+    std::unordered_set<Vertex<NetworkPoint>*> visited;
+    visited.insert(root);
+
+    // Add all edges incident to the root vertex to the priority queue
+    for (auto edge : root->getAdj()) {
+        pq.push(edge);
+    }
+
+    // Add the root vertex to the MST
+    MST.addVertex(root->getInfo());
+
+    // Main loop of Prim's algorithm
+    while (!pq.empty()) {
+        // Get the edge with the smallest weight
+        Edge<NetworkPoint> *minEdge = pq.top();
+        pq.pop();
+
+        // Get the destination vertex of the edge
+        Vertex<NetworkPoint> *destVertex = minEdge->getDest();
+
+        // If the destination vertex is already visited, skip this edge
+        if (visited.find(destVertex) != visited.end()) {
+            continue;
+        }
+
+        // Add the destination vertex to the MST
+        MST.addVertex(destVertex->getInfo());
+
+        // Add the edge to the MST
+        MST.addEdge(minEdge->getOrig()->getInfo(), destVertex->getInfo(), minEdge->getWeight());
+
+        // Mark the destination vertex as visited
+        visited.insert(destVertex);
+
+        // Add all edges incident to the destination vertex to the priority queue
+        for (auto edge : destVertex->getAdj()) {
+            if (visited.find(edge->getDest()) == visited.end()) {
+                pq.push(edge);
+            }
+        }
+    }
+
+    return MST;
+}
+
+double Graph::getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const {
+    auto vertex = findVertex(a);
+    for (const auto &edge : vertex->getAdj()) {
+        if (edge->getDest()->getInfo() == b) {
+            return edge->getWeight();
+        }
+    }
+    return 0;
+}
+
+
 inline void deleteMatrix(int **m, int n) {
     if (m != nullptr) {
         for (int i = 0; i < n; i++)

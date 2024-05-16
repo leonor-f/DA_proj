@@ -12,6 +12,7 @@ class Application {
     FileReader file;
     FileReader nodes;
     void fullyConnectGraph();
+    bool needToConnect;
 
 public:
     Application();

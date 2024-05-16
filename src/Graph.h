@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <float.h>
 #include "NetworkPoint.h"
+#include <unordered_set>
 
 template <class T>
 class Edge;
@@ -129,14 +130,17 @@ public:
     bool isDAG() const;
     bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
     std::vector<NetworkPoint> topsort() const;
-
     /**
      * @brief Auxiliary function to copy a graph.
      * @Complexity O(V + E)
      * @return A pointer to the new graph.
      */
     Graph * copyGraph();
+    std::vector<NetworkPoint> aproxTSP();
+    Graph computeMST(Vertex<NetworkPoint> *root);
 
+    double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
+  
     /**
      * @brief
      * @param curIndex
