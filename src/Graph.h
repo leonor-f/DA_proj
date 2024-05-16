@@ -42,6 +42,8 @@ public:
     bool removeEdge(T in);
     void removeOutgoingEdges();
 
+    const Edge<T> *getEdge(const Vertex<T> *dest) const;
+
 protected:
     T info;                // info node
     std::vector<Edge<T> *> adj;  // outgoing edges
@@ -115,6 +117,8 @@ public:
     bool removeEdge(const NetworkPoint &source, const NetworkPoint &dest);
     bool addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w);
 
+    Edge<NetworkPoint> *getNearestNeighbor(Vertex<NetworkPoint> *v) const;
+
     int getNumVertex() const;
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() const;
 
@@ -136,12 +140,22 @@ public:
     Graph computeMST(Vertex<NetworkPoint> *root);
 
     double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
+  
+    /**
+     * @brief
+     * @param curIndex
+     * @param curDist
+     * @param curPath
+     * @param minDist
+     * @param path
+     */
+    void tspBTRec(unsigned int curIndex, double curDist, std::vector<unsigned int> &curPath, double &minDist,
+                  std::vector<unsigned int> &path) const;
+
+    double tspBT(std::vector<unsigned int> &path) const;
 
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
-    double ** distMatrix = nullptr;   // dist matrix for Floyd-Warshall
-    int **pathMatrix = nullptr;   // path matrix for Floyd-Warshall
-
 };
 
 void deleteMatrix(int **m, int n);

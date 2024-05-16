@@ -1,7 +1,3 @@
-//
-// Created by alexandre on 03-05-2024.
-//
-
 #ifndef SRC_NETWORKPOINT_H
 #define SRC_NETWORKPOINT_H
 
