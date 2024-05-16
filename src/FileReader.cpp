@@ -27,6 +27,7 @@ std::vector<std::vector<std::string>> FileReader::getData() {
 }
 
 bool FileReader::setFile(std::string file, bool ignore) {
+    file_.close();
     file_.open(file);
     if (file_.fail()) {
         return false;
@@ -58,5 +59,7 @@ std::pair<double, double> FileReader::getCoordinates(unsigned id) {
             return res;
         }
     }
+
+    return res;
 
 }

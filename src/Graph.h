@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <float.h>
 #include "NetworkPoint.h"
+#include <unordered_set>
 
 template <class T>
 class Edge;
@@ -125,114 +126,20 @@ public:
     bool isDAG() const;
     bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
     std::vector<NetworkPoint> topsort() const;
-
-    /**
-     * @brief Calculates the maximum flow to the specified city.
-     * @Complexity:  O(E) if Edmonds-Karp has already been called.
-     * If not: O(V * E^2)
-     * @param city The city vertex to calculate the maximum flow for.
-     * @return The maximum flow to the specified city.
-     */
-    double getMaxFlow(NetworkPoint city);
-
-    /**
-     * @brief Checks water supply for each city in the graph.
-     * @Complexity:  O(V + E) if Edmonds-Karp has already been called.
-     * If not: O(V * E^2)
-     * @return A vector of pairs, where each pair contains the city code, demand, and maximum flow deficit.
-     */
-    std::vector<std::pair<std::string, std::pair<double, double>>> checkWaterSupply();
-
-    /**
-     * @brief Prints the values returned from the 'checkWaterSupply()' function.
-     * @Complexity O(n)
-     * @param supply The vector returned from the 'checkWaterSupply()' function.
-     */
-    void printWaterSupply(std::vector<std::pair<std::string, std::pair<double, double>>> supply);
-
-    /**
-    * @brief Calculates average difference, variance, and standard deviation of the flow to all cities
-    * @Complexity:  O(V + E) if Edmonds-Karp has already been called.
-    * If not: O(V * E^2)
-    * @return A vector containing the calculated metrics: average difference, variance, and standard deviation.
-    */
-    std::vector<double> calculateMetrics();
-
-    /**
-     * @brief Balances the load by redistributing flow in the graph.
-     * @Complexity O(V + E)
-     * @param averageDifference The average difference used for load balancing.
-     */
-    void balanceLoad(double averageDifference);
-
-    /**
-     * @brief Prints the results obtained from the 'calculateMetrics()' function
-     * @Complexity O(n)
-     * @param metric A vector containing the calculated metrics.
-     */
-    void printMetrics(std::vector<double> metric);
-
     /**
      * @brief Auxiliary function to copy a graph.
      * @Complexity O(V + E)
      * @return A pointer to the new graph.
      */
     Graph * copyGraph();
+    std::vector<NetworkPoint> aproxTSP();
+    Graph computeMST(Vertex<NetworkPoint> *root);
 
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
-    /**
-     * @brief Calculates the minimal residual capacity along the augmenting path.
-     * @Complexity: O(V)
-     * @param s Pointer to the source vertex.
-     * @param t Pointer to the sink vertex.
-     * @return The minimal residual capacity along the augmenting path.
-     */
-    unsigned findMinimalResidualAlongPath(Vertex<NetworkPoint> *s, Vertex<NetworkPoint> *p) const;
-    /**
-    * @brief Finds an augmenting path from the super source vertex to the super sink vertex using BFS.
-    * @Complexity: O(V + E)
-    * @param s Pointer to the source vertex.
-    * @param t Pointer to the sink vertex.
-    * @return True if an augmenting path is found; otherwise, false.
-    */
-    bool findAugPath(Vertex<NetworkPoint> *s, Vertex<NetworkPoint> *t) ;
-    /**
-     * @brief Augments flow along the path from sink to source.
-     * @Complexity: O(V)
-     * @param s Pointer to the source vertex.
-     * @param t Pointer to the sink vertex.
-     * @param f Amount of flow to be augmented along the path.
-     */
-    void augment(Vertex<NetworkPoint> *s, Vertex<NetworkPoint> *t, double f);
     double ** distMatrix = nullptr;   // dist matrix for Floyd-Warshall
     int **pathMatrix = nullptr;   // path matrix for Floyd-Warshall
-    /**
-     * @brief Adds a super source and super sink to the graph.
-     * @Complexity: O(V)
-     */
-    void addSuperSourceAndSink();
 
-    /**
-     * serves to store if the maximum flow edmond karps algorithm has already been ran
-     */
-    bool maxFlowRan = false;
-
-    /**
-     * @brief Tests and visits a vertex for the 'findAugPath' function.
-     * Time Complexity: O(1)
-     * @param q Reference to the queue.
-     * @param e Pointer to the edge connecting to the vertex.
-     * @param w Pointer to the vertex to be tested and visited.
-     * @param residual Residual capacity of the edge connecting to the vertex.
-     */
-    void testAndVisit(std::queue<Vertex<NetworkPoint> *> &q, Edge<NetworkPoint> *e, Vertex<NetworkPoint> *w, double residual);
-
-    /**
-    * @brief Sets the flow of all edges to 0 and runs the Edmonds-Karp algorithm
-    * @Complexity: O(V * E^2)
-    */
-    void edmondsKarp();
 };
 
 void deleteMatrix(int **m, int n);

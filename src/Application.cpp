@@ -153,7 +153,16 @@ void Application::backtracking() {
 }
 
 void Application::triangular() {
+    cout << "Fully connecting graph...";
+    //fullyConnectGraph();
+    cout << "Done! Continuing...";
+    auto g = network_->aproxTSP();
 
+    for (const auto &p : g) {
+        cout << p.getId() << endl;
+    }
+
+    //do not forget to compare with backtracking for the small graphs
     goBack();
 }
 
@@ -200,7 +209,7 @@ void Application::loadToyGraph() {
 
                     network_->addVertex(source);
                     network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
+                    network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
                 }
                 menu();
                 break;
@@ -214,7 +223,7 @@ void Application::loadToyGraph() {
 
                     network_->addVertex(source);
                     network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
+                    network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
                 }
                 menu();
                 break;
@@ -228,7 +237,7 @@ void Application::loadToyGraph() {
 
                     network_->addVertex(source);
                     network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
+                    network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
                 }
                 menu();
                 break;
