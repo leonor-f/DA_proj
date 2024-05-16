@@ -30,16 +30,16 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
 }
 
 void Application::fullyConnectGraph() {
-    for (const auto &p : network_->getVertexSet()) {
+    for (const auto &p: network_->getVertexSet()) {
         auto point1 = p.second->getInfo();
-        for (const auto &pp : network_->getVertexSet()) {
+        for (const auto &pp: network_->getVertexSet()) {
             auto point2 = pp.second->getInfo();
             if (point1 == point2) continue;
 
             bool edgeExists = false;
 
             // Check if there is already an edge between point1 and point2
-            for (const auto &edge : p.second->getAdj()) {
+            for (const auto &edge: p.second->getAdj()) {
                 if (edge->getDest()->getInfo() == point2) {
                     edgeExists = true;
                     break;
@@ -50,7 +50,8 @@ void Application::fullyConnectGraph() {
                 // Calculate distance between point1 and point2
                 auto point1Coords = nodes.getCoordinates(point1.getId());
                 auto point2Coords = nodes.getCoordinates(point2.getId());
-                double distance = haversine(point1Coords.first, point1Coords.second, point2Coords.first, point2Coords.second);
+                double distance = haversine(point1Coords.first, point1Coords.second, point2Coords.first,
+                                            point2Coords.second);
 
                 // Add edge between point1 and point2
                 network_->addEdge(point1, point2, distance);
@@ -60,6 +61,8 @@ void Application::fullyConnectGraph() {
 }
 
 Application::Application() {
+    network_ = nullptr;
+    isFileRead = false;
     menu();
 }
 
@@ -112,11 +115,12 @@ void Application::menu() {
 void Application::loadData() {
     int choice;
 
-    delete network_;
+    /*if (network_ != nullptr) {
+        delete network_;
+        network_ = nullptr;
+    }*/
 
     network_ = new Graph;
-
-    cout << "\nThe old graph has been deleted. Please select a new one.\n";
 
     do {
         cout << endl;
@@ -141,6 +145,7 @@ void Application::loadData() {
                 break;
             case 0:
                 menu();
+                //break;
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }
@@ -148,21 +153,52 @@ void Application::loadData() {
 }
 
 void Application::backtracking() {
+    if (!isFileRead) {
+        cout << "\nPlease select a graph to read:\n";
+        loadData();
+    }
+
+    clock_t start = clock(); // começar a contar o tempo de execução
+
+    // calcular backtracking
+    vector<unsigned int> path;
+    double minDist = network_->tspBT(path);
+
+    clock_t end = clock(); // terminar a contagem do tempo de execução
+
+    double duration =
+            static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+
+    cout << "Path:" << endl;
+    for (unsigned int p: path)
+        cout << " -> " << p;
+    cout << "Minimum cost: " << minDist << endl;
+    cout << "Execution time: " << duration << " milliseconds" << endl;
 
     goBack();
 }
 
 void Application::triangular() {
-
+    if (!isFileRead) {
+        cout << "\nPlease select a graph to read:\n";
+        loadData();
+    }
     goBack();
 }
 
 void Application::other() {
-
+    if (!isFileRead) {
+        cout << "\nPlease select a graph to read:\n";
+        loadData();
+    }
     goBack();
 }
 
 void Application::realWorld(string c) {
+    if (!isFileRead) {
+        cout << "\nPlease select a graph to read:\n";
+        loadData();
+    }
     // cout << "Path does not exist! << endl;
     goBack();
 }
@@ -174,124 +210,133 @@ void Application::goBack() {
 }
 
 void Application::loadToyGraph() {
-    int choice;
+    if (network_ != nullptr) {
+        int choice;
 
-    vector<vector<string>> data;
+        vector<vector<string>> data;
 
-    do {
-        cout << endl;
-        cout << "1. Shipping" << endl;
-        cout << "2. Stadiums" << endl;
-        cout << "3. Tourism" << endl << endl;
+        do {
+            cout << endl;
+            cout << "1. Shipping" << endl;
+            cout << "2. Stadiums" << endl;
+            cout << "3. Tourism" << endl << endl;
 
-        cout << "0. Go back" << endl << endl;
-        cout << "Enter your choice and press ENTER: ";
-        cin >> choice;
+            cout << "0. Go back" << endl << endl;
+            cout << "Enter your choice and press ENTER: ";
+            cin >> choice;
 
-        string sel;
-        switch (choice) {
-            case 1:
-                file.setFile("../../dataset/Toy-Graphs/shipping.csv", true);
-                data = file.getData();
+            string sel;
+            switch (choice) {
+                case 1:
+                    file.setFile("../../dataset/Toy-Graphs/shipping.csv", true);
+                    data = file.getData();
 
-                for (const auto &line : data) {
-                    NetworkPoint source(std::stoi(line.at(0)));
-                    NetworkPoint dest(std::stoi(line.at(1)));
+                    for (const auto &line: data) {
+                        NetworkPoint source(std::stoi(line.at(0)));
+                        NetworkPoint dest(std::stoi(line.at(1)));
 
-                    network_->addVertex(source);
-                    network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
-                }
-                menu();
-                break;
-            case 2:
-                file.setFile("../../dataset/Toy-Graphs/stadiums.csv", true);
-                data = file.getData();
+                        network_->addVertex(source);
+                        network_->addVertex(dest);
+                        network_->addEdge(source, dest, std::stod(line.at(2)));
+                    }
+                    isFileRead = true;
+                    menu();
+                    break;
+                case 2:
+                    file.setFile("../../dataset/Toy-Graphs/stadiums.csv", true);
+                    data = file.getData();
 
-                for (const auto &line : data) {
-                    NetworkPoint source(std::stoi(line.at(0)));
-                    NetworkPoint dest(std::stoi(line.at(1)));
+                    for (const auto &line: data) {
+                        NetworkPoint source(std::stoi(line.at(0)));
+                        NetworkPoint dest(std::stoi(line.at(1)));
 
-                    network_->addVertex(source);
-                    network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
-                }
-                menu();
-                break;
-            case 3:
-                file.setFile("../../dataset/Toy-Graphs/tourism.csv", true);
-                data = file.getData();
+                        network_->addVertex(source);
+                        network_->addVertex(dest);
+                        network_->addEdge(source, dest, std::stod(line.at(2)));
+                    }
+                    isFileRead = true;
+                    menu();
+                    break;
+                case 3:
+                    file.setFile("../../dataset/Toy-Graphs/tourism.csv", true);
+                    data = file.getData();
 
-                for (const auto &line : data) {
-                    NetworkPoint source(std::stoi(line.at(0)));
-                    NetworkPoint dest(std::stoi(line.at(1)));
+                    for (const auto &line: data) {
+                        NetworkPoint source(std::stoi(line.at(0)));
+                        NetworkPoint dest(std::stoi(line.at(1)));
 
-                    network_->addVertex(source);
-                    network_->addVertex(dest);
-                    network_->addEdge(source, dest, std::stod(line.at(2)));
-                }
-                menu();
-                break;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
-        }
-    } while (choice != 0);
-
+                        network_->addVertex(source);
+                        network_->addVertex(dest);
+                        network_->addEdge(source, dest, std::stod(line.at(2)));
+                    }
+                    isFileRead = true;
+                    menu();
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl;
+            }
+        } while (choice != 0);
+    }
 }
 
 void Application::loadMediumGraph() {
-    int choice;
+    if (network_ != nullptr) {
+        int choice;
 
-    vector<vector<string>> data;
+        vector<vector<string>> data;
 
-    cout << endl;
-    cout << "\nEnter the number of edges:";
-    cin >> choice;
+        cout << endl;
+        cout << "\nEnter the number of edges:";
+        cin >> choice;
 
-    if (!file.setFile("../../dataset/Extra_Fully_Connected_Graphs/edges_" + to_string(choice) + ".csv", false)) {
-        cout << "File does not exist.\n";
-        return;
-    };
-    nodes.setFile("../../dataset/Extra_Fully_Connected_Graphs/nodes.csv", true);
-    data = file.getData();
+        if (!file.setFile("../../dataset/Extra_Fully_Connected_Graphs/edges_" + to_string(choice) + ".csv", false)) {
+            cout << "File does not exist.\n";
+            return;
+        }
+        nodes.setFile("../../dataset/Extra_Fully_Connected_Graphs/nodes.csv", true);
+        data = file.getData();
 
-    for (const auto &line : data) {
-        NetworkPoint source(std::stoi(line.at(0)));
-        NetworkPoint dest(std::stoi(line.at(1)));
+        for (const auto &line: data) {
+            NetworkPoint source(std::stoi(line.at(0)));
+            NetworkPoint dest(std::stoi(line.at(1)));
 
-        network_->addVertex(source);
-        network_->addVertex(dest);
-        network_->addEdge(source, dest, std::stod(line.at(2)));
+            network_->addVertex(source);
+            network_->addVertex(dest);
+            network_->addEdge(source, dest, std::stod(line.at(2)));
+        }
+        isFileRead = true;
+        menu();
     }
-    menu();
 }
 
 void Application::loadRealGraph() {
-    int choice;
+    if (network_ != nullptr) {
+        int choice;
 
-    vector<vector<string>> data;
+        vector<vector<string>> data;
 
-    cout << endl;
-    cout << "\n Select the graph:";
-    cin >> choice;
+        cout << endl;
+        cout << "\n Select the graph:";
+        cin >> choice;
 
-    if (!file.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/edges.csv", true)) {
-        cout << "File does not exist.\n";
-        return;
+        if (!file.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/edges.csv", true)) {
+            cout << "File does not exist.\n";
+            return;
+        }
+
+        nodes.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/nodes.csv", true);
+
+        data = file.getData();
+
+        for (const auto &line: data) {
+            NetworkPoint source(std::stoi(line.at(0)));
+            NetworkPoint dest(std::stoi(line.at(1)));
+
+            network_->addVertex(source);
+            network_->addVertex(dest);
+            network_->addEdge(source, dest, std::stod(line.at(2)));
+        }
+        isFileRead = true;
+        menu();
     }
-
-    nodes.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/nodes.csv", true);
-
-    data = file.getData();
-
-    for (const auto &line : data) {
-        NetworkPoint source(std::stoi(line.at(0)));
-        NetworkPoint dest(std::stoi(line.at(1)));
-
-        network_->addVertex(source);
-        network_->addVertex(dest);
-        network_->addEdge(source, dest, std::stod(line.at(2)));
-    }
-
-    menu();
 }

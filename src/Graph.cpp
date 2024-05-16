@@ -1,7 +1,3 @@
-//
-// Created by alexandre on 07-03-2024.
-//
-
 #include <valarray>
 #include "Graph.h"
 
@@ -66,6 +62,16 @@ T Vertex<T>::getInfo() const {
 template<class T>
 std::vector<Edge<T> *> Vertex<T>::getAdj() const {
     return this->adj;
+}
+
+template<class T>
+const Edge<T> *Vertex<T>::getEdge(const Vertex<T> *dest) const {
+    for (const auto &edge: adj) {
+        if (edge->getDest() == dest) {
+            return edge;
+        }
+    }
+    return nullptr;
 }
 
 template<class T>
@@ -302,6 +308,13 @@ bool Graph::addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &
     return true;
 }
 
+Edge<NetworkPoint> *Graph::getNearestNeighbor(Vertex<NetworkPoint> *v) const {
+    for (auto e: v->getAdj())
+        if (!e->getDest()->isVisited())
+            return e;
+    return nullptr;
+}
+
 /****************** DFS ********************/
 
 /*
@@ -501,8 +514,13 @@ inline void deleteMatrix(double **m, int n) {
 }
 
 Graph::~Graph() {
-    deleteMatrix(distMatrix, vertexSet.size());
-    deleteMatrix(pathMatrix, vertexSet.size());
+    //deleteMatrix(distanceMatrix_, vertexSet.size());
+    if (!vertexSet.empty()) {
+        for (auto &v: vertexSet) {
+            removeVertex(v.second->getInfo());
+        }
+        vertexSet.clear();
+    }
 }
 
 Graph *Graph::copyGraph() {
@@ -529,3 +547,52 @@ Graph *Graph::copyGraph() {
     // newGraph->updateAllVerticesFlow();
     return newGraph;
 }
+
+void Graph::tspBTRec(unsigned int curIndex, double curDist, std::vector<unsigned int> &curPath, double &minDist,
+                     std::vector<unsigned int> &path) const {
+    unsigned int n = getNumVertex();
+    const Edge<NetworkPoint> *edge;
+
+    if (curIndex == n && (edge = findVertex(curPath[n - 1])->getEdge(findVertex(0)))) {
+        curDist += edge->getWeight();
+        if (curDist < minDist) {
+            minDist = curDist;
+            path = curPath;
+            path.push_back(0);
+        }
+        return;
+    }
+
+    for (unsigned int i = 1; i < n; i++) {
+        edge = findVertex(curPath[curIndex - 1])->getEdge(findVertex(i));
+        if (edge && (curDist + edge->getWeight() < minDist)) {
+            bool isNewVertex = true;
+            for (unsigned int j = 1; j < curIndex; j++) {
+                if (curPath[j] == i) {
+                    isNewVertex = false;
+                    break;
+                }
+            }
+            if (isNewVertex) {
+                curPath[curIndex] = i;
+                tspBTRec(curIndex + 1, curDist + edge->getWeight(), curPath, minDist, path);
+            }
+        }
+    }
+}
+
+double Graph::tspBT(std::vector<unsigned int> &path) const {
+    path.clear();
+
+    std::vector<unsigned int> curPath(getNumVertex());
+    double minDist = std::numeric_limits<double>::max();
+
+    // path starts at node 0
+    curPath[0] = 0;
+
+    // in the first recursive call curIndex starts at 1 rather than 0
+    tspBTRec(1, 0.0, curPath, minDist, path);
+
+    return minDist;
+}
+

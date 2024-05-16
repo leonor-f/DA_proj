@@ -78,4 +78,6 @@ fabric.properties
 
 .idea/
 
+dataset/
+
 **/cmake-build-debug/
