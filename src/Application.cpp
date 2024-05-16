@@ -153,14 +153,26 @@ void Application::backtracking() {
 }
 
 void Application::triangular() {
-    cout << "Fully connecting graph...";
-    //fullyConnectGraph();
-    cout << "Done! Continuing...";
+    cout << "Fully connecting graph..." << endl;
+    if (needToConnect) fullyConnectGraph();
+    cout << "Done! Continuing..." << endl;
     auto g = network_->aproxTSP();
 
-    for (const auto &p : g) {
-        cout << p.getId() << endl;
+    double total = 0.0;
+
+    for (size_t i = 0; i < g.size() - 1; ++i) {
+        cout << "From " << g.at(i).getId() << " to " << g.at(i+1).getId() << " with weight of "
+        << network_->getEdgeWeight(g.at(i), g.at(i+1)) << endl;
+        total+=network_->getEdgeWeight(g.at(i), g.at(i+1));
     }
+
+    cout << "The total weight of this is " << total << endl;
+
+    int choice;
+    do {
+        cout << "Press 0 to go back...";
+        cin >> choice;
+    } while (choice != 0);
 
     //do not forget to compare with backtracking for the small graphs
     goBack();
@@ -186,6 +198,8 @@ void Application::loadToyGraph() {
     int choice;
 
     vector<vector<string>> data;
+
+    needToConnect = false;
 
     do {
         cout << endl;
@@ -252,7 +266,7 @@ void Application::loadMediumGraph() {
     int choice;
 
     vector<vector<string>> data;
-
+    needToConnect = true;
     cout << endl;
     cout << "\nEnter the number of edges:";
     cin >> choice;
@@ -270,7 +284,7 @@ void Application::loadMediumGraph() {
 
         network_->addVertex(source);
         network_->addVertex(dest);
-        network_->addEdge(source, dest, std::stod(line.at(2)));
+        network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
     }
     menu();
 }
@@ -279,6 +293,8 @@ void Application::loadRealGraph() {
     int choice;
 
     vector<vector<string>> data;
+
+    needToConnect = true;
 
     cout << endl;
     cout << "\n Select the graph:";
@@ -299,7 +315,7 @@ void Application::loadRealGraph() {
 
         network_->addVertex(source);
         network_->addVertex(dest);
-        network_->addEdge(source, dest, std::stod(line.at(2)));
+        network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
     }
 
     menu();

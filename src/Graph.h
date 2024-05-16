@@ -135,6 +135,8 @@ public:
     std::vector<NetworkPoint> aproxTSP();
     Graph computeMST(Vertex<NetworkPoint> *root);
 
+    double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
+
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
     double ** distMatrix = nullptr;   // dist matrix for Floyd-Warshall

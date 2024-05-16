@@ -580,6 +580,16 @@ Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
     return MST;
 }
 
+double Graph::getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const {
+    auto vertex = findVertex(a);
+    for (const auto &edge : vertex->getAdj()) {
+        if (edge->getDest()->getInfo() == b) {
+            return edge->getWeight();
+        }
+    }
+    return 0;
+}
+
 
 inline void deleteMatrix(int **m, int n) {
     if (m != nullptr) {
