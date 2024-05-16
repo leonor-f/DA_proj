@@ -508,7 +508,7 @@ void preOrderTraversal(Graph &MST, Vertex<NetworkPoint> *current, std::vector<Ne
 }
 
 std::vector<NetworkPoint> Graph::aproxTSP() {
-    auto root = vertexSet.begin()->second;
+    auto root = findVertex(NetworkPoint(0));
     std::unordered_set<unsigned> visited;
     std::vector<NetworkPoint> tour;
 
@@ -624,12 +624,6 @@ inline void deleteMatrix(double **m, int n) {
 
 Graph::~Graph() {
     //deleteMatrix(distanceMatrix_, vertexSet.size());
-    if (!vertexSet.empty()) {
-        for (auto &v: vertexSet) {
-            removeVertex(v.second->getInfo());
-        }
-        vertexSet.clear();
-    }
 }
 
 Graph *Graph::copyGraph() {

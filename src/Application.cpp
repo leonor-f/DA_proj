@@ -196,6 +196,10 @@ void Application::triangular() {
         total+=network_->getEdgeWeight(g.at(i), g.at(i+1));
     }
 
+    cout << "From " << g.at(g.size()-1).getId() << " to " << g.at(0).getId() << " with weight of "
+        << network_->getEdgeWeight(g.at(g.size()-1), g.at(0)) << endl;
+    total+=network_->getEdgeWeight(g.at(g.size()-1), g.at(0));
+
     cout << "The total weight of this is " << total << endl;
 
     int choice;
