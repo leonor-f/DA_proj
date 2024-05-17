@@ -172,14 +172,14 @@ void Application::backtracking() {
     cout << "Path:" << endl;
     for (unsigned int p: path)
         cout << " -> " << p;
-    cout << "Minimum cost: " << minDist << endl;
+    cout << endl << "Minimum cost: " << minDist << endl;
     cout << "Execution time: " << duration << " milliseconds" << endl;
 
     goBack();
 }
 
 void Application::triangular() {
-  if (!isFileRead) {
+    if (!isFileRead) {
         cout << "\nPlease select a graph to read:\n";
         loadData();
     }
@@ -191,9 +191,9 @@ void Application::triangular() {
     double total = 0.0;
 
     for (size_t i = 0; i < g.size() - 1; ++i) {
-        cout << "From " << g.at(i).getId() << " to " << g.at(i+1).getId() << " with weight of "
-        << network_->getEdgeWeight(g.at(i), g.at(i+1)) << endl;
-        total+=network_->getEdgeWeight(g.at(i), g.at(i+1));
+        cout << "From " << g.at(i).getId() << " to " << g.at(i + 1).getId() << " with weight of "
+             << network_->getEdgeWeight(g.at(i), g.at(i + 1)) << endl;
+        total += network_->getEdgeWeight(g.at(i), g.at(i + 1));
     }
 
     cout << "The total weight of this is " << total << endl;
@@ -236,7 +236,7 @@ void Application::loadToyGraph() {
         int choice;
 
         vector<vector<string>> data;
-      
+
         needToConnect = false;
 
         do {

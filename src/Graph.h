@@ -140,18 +140,35 @@ public:
     Graph computeMST(Vertex<NetworkPoint> *root);
 
     double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
-  
+
     /**
-     * @brief
-     * @param curIndex
-     * @param curDist
-     * @param curPath
-     * @param minDist
-     * @param path
+     * @brief Recursive helper function for solving the Traveling Salesman Problem using backtracking.
+     *
+     * This function attempts to find the shortest path that visits all vertices in the graph exactly once
+     * and returns to the starting vertex. It explores all possible paths using backtracking and updates
+     * the minimum distance and corresponding path whenever a shorter path is found.
+     *
+     * @param curIndex The current index in the path being constructed.
+     * @param curDist The current total distance of the path being constructed.
+     * @param curPath The current path being constructed.
+     * @param minDist Reference to the minimum distance found so far.
+     * @param path Reference to the path corresponding to the minimum distance found so far.
+     * @complexity O(V!): all possible permutations
      */
     void tspBTRec(unsigned int curIndex, double curDist, std::vector<unsigned int> &curPath, double &minDist,
                   std::vector<unsigned int> &path) const;
 
+    /**
+     * @brief Solves the Traveling Salesman Problem using backtracking.
+     *
+     * This function initializes the necessary variables and calls the recursive helper function `tspBTRec`
+     * to compute the shortest possible route that visits each vertex exactly once and returns to the starting point.
+     * It returns the minimum distance of such a path and stores the corresponding path in the provided vector.
+     *
+     * @param path Reference to a vector where the path of the minimum distance will be stored.
+     * @return The minimum distance of the Traveling Salesman Problem solution.
+     * @complexity O(V!)
+     */
     double tspBT(std::vector<unsigned int> &path) const;
 
 protected:
