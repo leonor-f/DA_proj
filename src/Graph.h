@@ -153,7 +153,7 @@ public:
      * @param curPath The current path being constructed.
      * @param minDist Reference to the minimum distance found so far.
      * @param path Reference to the path corresponding to the minimum distance found so far.
-     * @complexity O(V!): all possible permutations
+     * @complexity O(V!)
      */
     void tspBTRec(unsigned int curIndex, double curDist, std::vector<unsigned int> &curPath, double &minDist,
                   std::vector<unsigned int> &path) const;
