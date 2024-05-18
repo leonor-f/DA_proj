@@ -761,3 +761,87 @@ std::vector<Cluster> hierarchical_clustering(const Graph& graph, int num_cluster
 
     return clusters;
 }
+
+
+// Function to perform k-means clustering on a graph with dynamic number of clusters based on maximum number of vertices per cluster
+vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters) {
+    // Initialize clusters
+    vector<Cluster> clusters;
+
+    // Initialize centroids with random vertices from the graph
+    vector<Vertex<NetworkPoint>*> centroids;
+    // Add code to randomly select initial centroids
+    // ...
+
+    // Initialize the maximum number of vertices per cluster
+    const int max_vertices_per_cluster = ceil(graph.getNumVertex() / static_cast<double>(max_clusters));
+
+    // Iterate until all vertices are assigned to clusters
+    while (!centroids.empty()) {
+        // Create a new cluster
+        Cluster cluster;
+
+        // Randomly select a centroid
+        Vertex<NetworkPoint>* centroid = centroids.back();
+        centroids.pop_back();
+        cluster.vertices.push_back(centroid);
+
+        // Assign vertices to the current cluster until it reaches the maximum number of vertices
+        while (cluster.vertices.size() < max_vertices_per_cluster) {
+            // Find the nearest unassigned vertex to the current centroid
+            double min_distance = numeric_limits<double>::infinity();
+            Vertex<NetworkPoint>* nearest_vertex = nullptr;
+            for (const auto& entry : graph.getVertexSet()) {
+                Vertex<NetworkPoint>* vertex = entry.second;
+                // Check if the vertex is unassigned
+                if (find(cluster.vertices.begin(), cluster.vertices.end(), vertex) == cluster.vertices.end()) {
+                    auto v1 = centroid->getInfo();
+                    auto v2 = vertex->getInfo();
+                    double distance = haversine(v1.getLat(),v1.getLon(),
+                                                v2.getLat(),v2.getLon() );
+                    if (distance < min_distance) {
+                        min_distance = distance;
+                        nearest_vertex = vertex;
+                    }
+                }
+            }
+
+            // Add the nearest unassigned vertex to the current cluster
+            if (nearest_vertex != nullptr) {
+                cluster.vertices.push_back(nearest_vertex);
+            }
+        }
+
+        // Add the current cluster to the list of clusters
+        clusters.push_back(cluster);
+    }
+
+    // Assign remaining vertices to the nearest clusters
+    for (const auto& entry : graph.getVertexSet()) {
+        Vertex<NetworkPoint>* vertex = entry.second;
+        // Check if the vertex is unassigned
+        if (none_of(clusters.begin(), clusters.end(), [&](const Cluster& cluster) {
+            return find(cluster.vertices.begin(), cluster.vertices.end(), vertex) != cluster.vertices.end();
+        })) {
+            // Find the cluster whose centroid is closest to the vertex
+            double min_distance = numeric_limits<double>::infinity();
+            Cluster* nearest_cluster = nullptr;
+            for (auto& cluster : clusters) {
+                auto v1 = cluster.vertices[0]->getInfo();
+                auto v2 = vertex->getInfo();
+                double distance = haversine(v1.getLat(),v1.getLon(),
+                                            v2.getLat(),v2.getLon() ); // Assuming the first vertex is the centroid
+                if (distance < min_distance) {
+                    min_distance = distance;
+                    nearest_cluster = &cluster;
+                }
+            }
+            // Add the vertex to the nearest cluster
+            if (nearest_cluster != nullptr) {
+                nearest_cluster->vertices.push_back(vertex);
+            }
+        }
+    }
+
+    return clusters;
+}
