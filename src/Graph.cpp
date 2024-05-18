@@ -705,10 +705,8 @@ double Graph::tspBT(std::vector<unsigned int> &path) const {
     return minDist;
 }
 
-struct Cluster {
-    std::vector<Vertex<NetworkPoint>*> vertices;
-};
 
+/*
 // Function to compute the distance between two clusters
 double compute_cluster_distance( Cluster& cluster1,  Cluster& cluster2) {
     double min_distance = std::numeric_limits<double>::infinity();
@@ -761,15 +759,18 @@ std::vector<Cluster> hierarchical_clustering(const Graph& graph, int num_cluster
 
     return clusters;
 }
+*/
 
+double convertToRadians(double degree);
+double haversine(double lat1, double lon1, double lat2, double lon2);
 
 // Function to perform k-means clustering on a graph with dynamic number of clusters based on maximum number of vertices per cluster
-vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters) {
+std::vector<Graph::Cluster> Graph::k_means_clustering(const Graph& graph, int max_clusters) {
     // Initialize clusters
-    vector<Cluster> clusters;
+    std::vector<Cluster> clusters;
 
     // Initialize centroids with random vertices from the graph
-    vector<Vertex<NetworkPoint>*> centroids;
+    std::vector<Vertex<NetworkPoint>*> centroids;
     // Add code to randomly select initial centroids
     // ...
 
@@ -789,7 +790,7 @@ vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters) {
         // Assign vertices to the current cluster until it reaches the maximum number of vertices
         while (cluster.vertices.size() < max_vertices_per_cluster) {
             // Find the nearest unassigned vertex to the current centroid
-            double min_distance = numeric_limits<double>::infinity();
+            double min_distance = std::numeric_limits<double>::infinity();
             Vertex<NetworkPoint>* nearest_vertex = nullptr;
             for (const auto& entry : graph.getVertexSet()) {
                 Vertex<NetworkPoint>* vertex = entry.second;
@@ -824,7 +825,7 @@ vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters) {
             return find(cluster.vertices.begin(), cluster.vertices.end(), vertex) != cluster.vertices.end();
         })) {
             // Find the cluster whose centroid is closest to the vertex
-            double min_distance = numeric_limits<double>::infinity();
+            double min_distance = std::numeric_limits<double>::infinity();
             Cluster* nearest_cluster = nullptr;
             for (auto& cluster : clusters) {
                 auto v1 = cluster.vertices[0]->getInfo();
@@ -845,3 +846,4 @@ vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters) {
 
     return clusters;
 }
+

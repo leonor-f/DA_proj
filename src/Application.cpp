@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <cmath>
 
+
 #include "NetworkPoint.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ double convertToRadians(double degree) {
     return degree * M_PI / 180.0;
 }
 
-double haversine(double lat1, double lon1, double lat2, double lon2) {
+double  haversine(double lat1, double lon1, double lat2, double lon2) {
     double rad_lat1 = convertToRadians(lat1);
     double rad_lon1 = convertToRadians(lon1);
     double rad_lat2 = convertToRadians(lat2);
@@ -202,10 +203,22 @@ void Application::triangular() {
     goBack();
 }
 
+
 void Application::other() {
     if (!isFileRead) {
         cout << "\nPlease select a graph to read:\n";
         loadData();
+    }
+
+    cout << "Fully connecting graph..." << endl;
+    if (needToConnect) fullyConnectGraph();
+    cout << "Done! Continuing..." << endl;
+    auto res = network_->k_means_clustering(*network_, 2);
+    for (int i= 0; i<res.size();i++){
+        for (int j= 0; j<res[i].vertices.size();i++) {
+
+            cout << "\n\n" << i << "    " << res[i].vertices[j]->getInfo().getId() << "\n" ;
+        }
     }
 
     goBack();

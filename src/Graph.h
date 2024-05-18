@@ -9,7 +9,6 @@
 #include <unordered_map>
 #include <float.h>
 #include "NetworkPoint.h"
-#include "Application.cpp"
 #include <unordered_set>
 
 template <class T>
@@ -171,6 +170,11 @@ public:
      * @complexity O(V!)
      */
     double tspBT(std::vector<unsigned int> &path) const;
+
+    struct Cluster {
+        std::vector<Vertex<NetworkPoint>*> vertices;
+    };
+    std::vector<Cluster> k_means_clustering(const Graph& graph, int max_clusters);
 
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
