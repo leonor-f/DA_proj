@@ -8,7 +8,7 @@
 
 using namespace std;
 
-double convertToRadians(double degree) {
+/*double convertToRadians(double degree) {
     return degree * M_PI / 180.0;
 }
 
@@ -27,7 +27,7 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
     const double earthradius = 6371000.0; // in meters
 
     return earthradius * c;
-}
+}*/
 
 void Application::fullyConnectGraph() {
     for (const auto &p: network_->getVertexSet()) {
@@ -50,7 +50,7 @@ void Application::fullyConnectGraph() {
                 // Calculate distance between point1 and point2
                 auto point1Coords = nodes.getCoordinates(point1.getId());
                 auto point2Coords = nodes.getCoordinates(point2.getId());
-                double distance = haversine(point1Coords.second, point1Coords.first, point2Coords.second,
+                double distance = network_->haversine(point1Coords.second, point1Coords.first, point2Coords.second,
                                             point2Coords.first);
 
                 // Add edge between point1 and point2
@@ -190,13 +190,13 @@ void Application::triangular() {
 
     double total = 0.0;
 
-    for (size_t i = 0; i < g.size() - 1; ++i) {
+    for (size_t i = 0; i < g.size() - 1; i++) {
         cout << "From " << g.at(i).getId() << " to " << g.at(i + 1).getId() << " with weight of "
              << network_->getEdgeWeight(g.at(i), g.at(i + 1)) << endl;
         total += network_->getEdgeWeight(g.at(i), g.at(i + 1));
     }
 
-    cout << "The total weight of this is " << total << endl;
+    cout << "Total weight: " << total << endl;
 
     //do not forget to compare with backtracking for the small graphs
     goBack();
@@ -207,6 +207,23 @@ void Application::other() {
         cout << "\nPlease select a graph to read:\n";
         loadData();
     }
+
+    clock_t start = clock();
+
+    // calcular heurística
+    vector<unsigned int> path;
+    double heuristicDist = network_->tspHeuristic(path);
+
+    clock_t end = clock();
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+
+    cout << endl << "Heuristic Path:" << endl;
+    for (auto i = 0; i < path.size() - 1; i++)
+        cout << path[i] << " -> ";
+    cout << path[path.size() - 1];
+
+    cout << endl << "Total cost: " << heuristicDist << endl;
+    cout << "Execution time: " << duration << " milliseconds" << endl;
 
     goBack();
 }
