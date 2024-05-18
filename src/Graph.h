@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <float.h>
 #include "NetworkPoint.h"
+#include "Application.cpp"
 #include <unordered_set>
 
 template <class T>

@@ -705,3 +705,59 @@ double Graph::tspBT(std::vector<unsigned int> &path) const {
     return minDist;
 }
 
+struct Cluster {
+    std::vector<Vertex<NetworkPoint>*> vertices;
+};
+
+// Function to compute the distance between two clusters
+double compute_cluster_distance( Cluster& cluster1,  Cluster& cluster2) {
+    double min_distance = std::numeric_limits<double>::infinity();
+    for (const auto& v1 : cluster1.vertices) {
+        for (const auto& v2 : cluster2.vertices) {
+            double distance = haversine(v1->getInfo().getLat(), v1->getInfo().getLon(), v2->getInfo().getLat(),v2->getInfo().getLon());
+            if (distance < min_distance) {
+                min_distance = distance;
+            }
+        }
+    }
+    return min_distance;
+}
+
+// Function to perform hierarchical clustering on a graph
+std::vector<Cluster> hierarchical_clustering(const Graph& graph, int num_clusters) {
+    // Initialize clusters with each vertex as a separate cluster
+    std::vector<Cluster> clusters;
+    for (const auto& entry : graph.getVertexSet()) {
+        Cluster cluster;
+        cluster.vertices.push_back(entry.second);
+        clusters.push_back(cluster);
+    }
+
+    // Perform hierarchical clustering until the desired number of clusters is reached
+    while (clusters.size() > num_clusters) {
+        // Find the closest pair of clusters
+        double min_distance = std::numeric_limits<double>::infinity();
+        int closest_cluster1 = -1, closest_cluster2 = -1;
+        for (int i = 0; i < clusters.size(); ++i) {
+            for (int j = i + 1; j < clusters.size(); ++j) {
+                // Compute the distance between the centroids of the clusters
+                double distance = compute_cluster_distance(clusters[i], clusters[j]); // Implement this function
+
+                // Update the closest pair of clusters
+                if (distance < min_distance) {
+                    min_distance = distance;
+                    closest_cluster1 = i;
+                    closest_cluster2 = j;
+                }
+            }
+        }
+
+        // Merge the closest pair of clusters
+        clusters[closest_cluster1].vertices.insert(clusters[closest_cluster1].vertices.end(),
+                                                   clusters[closest_cluster2].vertices.begin(),
+                                                   clusters[closest_cluster2].vertices.end());
+        clusters.erase(clusters.begin() + closest_cluster2);
+    }
+
+    return clusters;
+}
