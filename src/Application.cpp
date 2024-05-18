@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <cmath>
 
+
 #include "NetworkPoint.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ using namespace std;
     return degree * M_PI / 180.0;
 }
 
-double haversine(double lat1, double lon1, double lat2, double lon2) {
+double  haversine(double lat1, double lon1, double lat2, double lon2) {
     double rad_lat1 = convertToRadians(lat1);
     double rad_lon1 = convertToRadians(lon1);
     double rad_lat2 = convertToRadians(lat2);
@@ -201,6 +202,7 @@ void Application::triangular() {
     //do not forget to compare with backtracking for the small graphs
     goBack();
 }
+
 
 void Application::other() {
     if (!isFileRead) {
