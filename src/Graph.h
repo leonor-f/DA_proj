@@ -102,13 +102,8 @@ public:
     int getNumVertex() const;
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() const;
 
-    std:: vector<NetworkPoint> dfs() const;
-    std:: vector<NetworkPoint> dfs(const NetworkPoint & source) const;
     void dfsVisit(Vertex<NetworkPoint> *v,  std::vector<NetworkPoint> & res) const;
-    std::vector<NetworkPoint> bfs(const NetworkPoint & source) const;
-
-    bool isDAG() const;
-    bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
+    bool isConnected() const;
 
     /**
      * @brief Calculates the Haversine distance between two points specified by latitude and longitude.
@@ -228,8 +223,26 @@ public:
      */
     void clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const;
 
+    /**
+     * @brief Solves the Travelling Salesperson Problem (TSP) using a greedy heuristic approach.
+     *
+     * This function attempts to find a Hamiltonian cycle (if one exists) in a connected graph by
+     * iteratively selecting the shortest edge to an unvisited vertex (nearest neighbour). If the graph is not connected,
+     * it returns -1.
+     *
+     * @param path A reference to a vector that will contain the order of visited vertices in the
+     * resulting TSP path, starting from the initial vertex. The initial vertex is provided as the first
+     * element in this vector. The vector is modified to include the full cycle.
+     * @return The total distance of the TSP path. If the graph is not connected or a cycle cannot
+     * be formed, it returns -1.
+     *
+     * @complexity O(V^2), where V is the number of vertices.
+     */
+    double tspRealWorld(std::vector<unsigned int> &path) const;
+
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
+
 };
 
 

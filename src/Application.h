@@ -7,7 +7,6 @@
 #include "Graph.h"
 
 class Application {
-    //Graph *network_ = new Graph;
     Graph *network_;
     FileReader file;
     FileReader nodes;

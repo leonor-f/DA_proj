@@ -293,6 +293,31 @@ void Graph::dfsVisit(Vertex<NetworkPoint> *v, std::vector<NetworkPoint> &res) co
     }
 }
 
+bool Graph::isConnected() const {
+    if (vertexSet.empty()) return true;
+
+    std::unordered_set<unsigned> visited;
+    std::queue<unsigned> q;
+
+    auto startVertex = vertexSet.begin()->first;
+    q.push(startVertex);
+    visited.insert(startVertex);
+
+    while (!q.empty()) {
+        auto u = q.front();
+        q.pop();
+        for (const auto &e: vertexSet.at(u)->getAdj()) {
+            auto v = e->getDest()->getInfo().getId();
+            if (visited.find(v) == visited.end()) {
+                visited.insert(v);
+                q.push(v);
+            }
+        }
+    }
+
+    return visited.size() == vertexSet.size();
+}
+
 void preOrderTraversal(Graph &MST, Vertex<NetworkPoint> *current, std::vector<NetworkPoint> &L) {
     if (current == nullptr)
         return;
@@ -317,7 +342,6 @@ double Graph::getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const 
 
 struct EdgeComparator {
     bool operator()(const Edge<NetworkPoint> *lhs, const Edge<NetworkPoint> *rhs) const {
-        // Compare edges based on their weights
         return lhs->getWeight() > rhs->getWeight();
     }
 };
@@ -392,7 +416,6 @@ double Graph::tspBT(std::vector<unsigned int> &path) const {
 }
 
 std::vector<NetworkPoint> Graph::aproxTSP() {
-    //auto root = vertexSet.begin()->second;
     auto root = findVertex(NetworkPoint(0));
     std::unordered_set<unsigned> visited;
     std::vector<NetworkPoint> tour;
@@ -411,6 +434,8 @@ std::vector<NetworkPoint> Graph::aproxTSP() {
             visited.insert(vertex.getId());
         }
     }
+
+    tour.push_back(tour.at(0));
 
     return tour;
 }
@@ -482,7 +507,7 @@ Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
 
 double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
     path.clear();
-    // nº of clusters
+    // nº de clusters
     unsigned int k = (int) round(std::sqrt(getNumVertex()));
 
     std::vector<std::vector<unsigned int>> clusters;
@@ -494,9 +519,9 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
     std::unordered_set<unsigned int> visited;
     visited.insert(0);
 
-    /*for (const auto &cluster: clusters) {
+    for (const auto &cluster: clusters) {
         std::vector<unsigned int> clusterPath;
-        double clusterDist = solveClusterTSP(cluster, clusterPath);
+        solveClusterTSP(cluster, clusterPath);
         for (unsigned int node: clusterPath) {
             if (visited.find(node) == visited.end()) {
                 finalPath.push_back(node);
@@ -505,69 +530,14 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
         }
     }
 
-    finalPath.push_back(0); // Ending at node 0
+    finalPath.push_back(0); // terminar no node 0 (inicial)
     path = finalPath;
 
-    // calculate total distance of the final path
     double totalDist = 0.0;
     for (unsigned int i = 0; i < finalPath.size() - 1; i++) {
         totalDist += findVertex(finalPath[i])->getEdge(findVertex(finalPath[i + 1]))->getWeight();
     }
 
-    return totalDist;*/
-
-    double totalDist = 0.0;
-    unsigned int current = 0;
-
-    for (const auto &cluster: clusters) {
-        if (cluster.empty()) continue;
-
-        std::vector<unsigned int> clusterPath;
-        double clusterDist = solveClusterTSP(cluster, clusterPath);
-
-        // find nearest neighbour of the current node
-        unsigned int nearestInCluster = clusterPath[0];
-        double minDist = std::numeric_limits<double>::max();
-        for (unsigned int node: clusterPath) {
-            if (auto edge = findVertex(current)->getEdge(findVertex(node))) {
-                double dist = edge->getWeight();
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearestInCluster = node;
-                }
-            }
-        }
-
-        if (minDist == std::numeric_limits<double>::max()) continue; // No valid edge found
-
-        // move to the nearest node in the current cluster
-        totalDist += minDist;
-        current = nearestInCluster;
-        finalPath.push_back(current);
-        visited.insert(current);
-
-        // traverse the cluster path
-        for (unsigned int node: clusterPath) {
-            if (visited.find(node) == visited.end()) {
-                totalDist += findVertex(current)->getEdge(findVertex(node))->getWeight();
-                current = node;
-                finalPath.push_back(current);
-                visited.insert(current);
-            }
-        }
-        totalDist += clusterDist;
-    }
-
-    if (auto edge = findVertex(current)->getEdge(findVertex(0))) {
-        totalDist += edge->getWeight();
-        finalPath.push_back(0);
-    }
-
-    // return to the starting node 0
-    //totalDist += findVertex(current)->getEdge(findVertex(0))->getWeight();
-    //finalPath.push_back(0);
-
-    path = finalPath;
     return totalDist;
 }
 
@@ -586,7 +556,7 @@ void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigne
         clusters.clear();
         clusters.resize(k);
 
-        // assign vertices to the nearest centroid
+        // assignar vértices ao centróide mais perto
         for (unsigned int i = 0; i < getNumVertex(); i++) {
             NetworkPoint point = findVertex(i)->getInfo();
             unsigned int bestCluster = 0;
@@ -603,7 +573,7 @@ void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigne
             clusters[bestCluster].push_back(i);
         }
 
-        // update centroids
+        // atualizar centróides
         for (unsigned int j = 0; j < k; j++) {
             double lat = 0.0, lon = 0.0;
             for (unsigned int vertex: clusters[j]) {
@@ -634,7 +604,6 @@ double Graph::solveClusterTSP(const std::vector<unsigned int> &cluster, std::vec
 
     unsigned int current = cluster[0];
     std::unordered_set<unsigned int> unvisited(cluster.begin() + 1, cluster.end());
-    //unvisited.erase(current);
     clusterPath.push_back(current);
 
     double totalDist = 0.0;
@@ -670,4 +639,47 @@ unsigned int Graph::getNearestVertex(unsigned int from, const std::unordered_set
     }
 
     return nearest;
+}
+
+double Graph::tspRealWorld(std::vector<unsigned int> &path) const {
+    if (!isConnected()) {
+        // grafo não é conectado
+        return -1;
+    }
+
+    std::unordered_set<unsigned int> visited;
+
+    //unsigned int current = vertexSet.begin()->first;
+    unsigned int current = path.at(0);
+    //path.push_back(current);
+    visited.insert(current);
+    double totalDist = 0.0;
+
+    while (path.size() < vertexSet.size()) {
+        double minDist = std::numeric_limits<double>::max();
+        unsigned int next = 0;
+        for (const auto &edge: vertexSet.at(current)->getAdj()) {
+            auto neighbor = edge->getDest()->getInfo().getId();
+            if (visited.find(neighbor) == visited.end() && edge->getWeight() < minDist) {
+                minDist = edge->getWeight();
+                next = neighbor;
+            }
+        }
+        if (next == 0) break; // não há mais vértices para visitar (grafo não é conectado)
+        path.push_back(next);
+        visited.insert(next);
+        totalDist += minDist;
+        current = next;
+    }
+
+    auto returnEdge = vertexSet.at(current)->getEdge(vertexSet.at(path[0]));
+    if (returnEdge) {
+        totalDist += returnEdge->getWeight();
+        path.push_back(path[0]);
+    } else {
+        // não há nenhum path que retorna ao vértice inicial
+        return -1;
+    }
+
+    return totalDist;
 }
