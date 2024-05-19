@@ -415,6 +415,17 @@ std::vector<NetworkPoint> Graph::aproxTSP() {
     return tour;
 }
 
+double Graph::calculateTriangular(std::vector<NetworkPoint> g) {
+    double total = 0.0;
+
+    for (auto i = 0; i < g.size() - 1; i++) {
+        total += getEdgeWeight(g.at(i), g.at(i + 1));
+    }
+    total += getEdgeWeight(g.at(g.size() - 1), g.at(0));
+
+    return total;
+}
+
 Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
     Graph MST;
 

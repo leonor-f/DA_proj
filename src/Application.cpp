@@ -52,7 +52,7 @@ void Application::fullyConnectGraph() {
                 auto point1Coords = nodes.getCoordinates(point1.getId());
                 auto point2Coords = nodes.getCoordinates(point2.getId());
                 double distance = network_->haversine(point1Coords.second, point1Coords.first, point2Coords.second,
-                                            point2Coords.first);
+                                                      point2Coords.first);
 
                 // Add edge between point1 and point2
                 network_->addEdge(point1, point2, distance);
@@ -168,7 +168,7 @@ void Application::backtracking() {
     double duration =
             static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
 
-    cout << endl << "Path:" << endl;
+    cout << endl << "Backtracking Path:" << endl;
     for (auto i = 0; i < path.size() - 1; i++)
         cout << path[i] << " -> ";
     cout << path[path.size() - 1];
@@ -184,25 +184,39 @@ void Application::triangular() {
         cout << "\nPlease select a graph to read:\n";
         loadData();
     }
-    cout << "Fully connecting graph..." << endl;
+
+    cout << endl << "Fully connecting graph..." << endl;
     if (needToConnect) fullyConnectGraph();
     cout << "Done! Continuing..." << endl;
+
+    clock_t start = clock(); // começar a contar o tempo de execução
+
+    // calcular aproximação triangular
     auto g = network_->aproxTSP();
+    double total = network_->calculateTriangular(g);
 
-    double total = 0.0;
+    clock_t end = clock(); // terminar a contagem do tempo de execução
 
-    for (size_t i = 0; i < g.size() - 1; i++) {
-        cout << "From " << g.at(i).getId() << " to " << g.at(i + 1).getId() << " with weight of "
-             << network_->getEdgeWeight(g.at(i), g.at(i + 1)) << endl;
-        total += network_->getEdgeWeight(g.at(i), g.at(i + 1));
+    double duration =
+            static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+
+    cout << endl << "Triangular Path:" << endl;
+    for (auto i = 0; i < g.size() - 1; i++) {
+        cout << g.at(i).getId() << " -> ";
+    }
+    cout << g.at(0).getId();
+
+    cout << endl << "Total cost: " << total << endl;
+    cout << "Execution time: " << duration << " milliseconds" << endl;
+
+    if (!needToConnect) {
+        vector<unsigned int> path;
+        double minDist = network_->tspBT(path);
+        cout << "Difference from the backtracking: " << total - minDist << endl;
     }
 
-    cout << "Total weight: " << total << endl;
-
-    //do not forget to compare with backtracking for the small graphs
     goBack();
 }
-
 
 void Application::other() {
     if (!isFileRead) {
@@ -210,13 +224,18 @@ void Application::other() {
         loadData();
     }
 
-    clock_t start = clock();
+    cout << endl << "Fully connecting graph..." << endl;
+    if (needToConnect) fullyConnectGraph();
+    cout << "Done! Continuing..." << endl;
+
+    clock_t start = clock(); // começar a contar o tempo de execução
 
     // calcular heurística
     vector<unsigned int> path;
     double heuristicDist = network_->tspHeuristic(path);
 
-    clock_t end = clock();
+    clock_t end = clock(); // terminar a contagem do tempo de execução
+
     double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
 
     cout << endl << "Heuristic Path:" << endl;
@@ -226,6 +245,12 @@ void Application::other() {
 
     cout << endl << "Total cost: " << heuristicDist << endl;
     cout << "Execution time: " << duration << " milliseconds" << endl;
+
+    if (needToConnect) {
+        auto g = network_->aproxTSP();
+        double total = network_->calculateTriangular(g);
+        cout << "Difference from the triangular: " << heuristicDist - total << endl;
+    }
 
     goBack();
 }

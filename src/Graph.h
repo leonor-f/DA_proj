@@ -114,6 +114,7 @@ public:
 
     std::vector<NetworkPoint> aproxTSP();
     Graph computeMST(Vertex<NetworkPoint> *root);
+    double calculateTriangular(std::vector<NetworkPoint> g);
 
     double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
 
