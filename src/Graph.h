@@ -119,7 +119,7 @@ public:
     double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
 
     /**
-     * @brief Recursive helper function for solving the Traveling Salesman Problem using backtracking.
+     * @brief Recursive helper function for solving the Traveling Salesman Problem using backtracking. Complexity: O(V!)
      *
      * This function attempts to find the shortest path that visits all vertices in the graph exactly once
      * and returns to the starting vertex. It explores all possible paths using backtracking and updates
@@ -130,13 +130,13 @@ public:
      * @param curPath The current path being constructed.
      * @param minDist Reference to the minimum distance found so far.
      * @param path Reference to the path corresponding to the minimum distance found so far.
-     * @complexity O(V!)
+     *
      */
     void tspBTRec(unsigned int curIndex, double curDist, std::vector<unsigned int> &curPath, double &minDist,
                   std::vector<unsigned int> &path) const;
 
     /**
-     * @brief Solves the Traveling Salesman Problem using backtracking.
+     * @brief Solves the Traveling Salesman Problem using backtracking. Complexity: O(V!)
      *
      * This function initializes the necessary variables and calls the recursive helper function `tspBTRec`
      * to compute the shortest possible route that visits each vertex exactly once and returns to the starting point.
@@ -144,49 +144,49 @@ public:
      *
      * @param path Reference to a vector where the path of the minimum distance will be stored.
      * @return The minimum distance of the Traveling Salesman Problem solution.
-     * @complexity O(V!)
+     *
      */
     double tspBT(std::vector<unsigned int> &path) const;
 
     /**
-     * @brief Solves the TSP using a heuristic approach based on clustering and greedy traversal.
+     * @brief Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity: O(N^2), where N is the number of vertices in the graph.
      *
      * @param path A reference to a vector of unsigned integers to store the resulting TSP path.
      * @return The total distance of the TSP tour.
-     * @complexity O(N^2), where N is the number of vertices in the graph.
+     *
      */
     double tspHeuristic(std::vector<unsigned int> &path) const;
 
     /**
-     * @brief Finds the nearest vertex from a specified vertex among a set of candidates.
+     * @brief Finds the nearest vertex from a specified vertex among a set of candidates. Complexity: O(C), where C is the number of candidates.
      *
      * @param from The index of the vertex from which distances are measured.
      * @param candidates A reference to an unordered set of unsigned integers representing
      *        the indices of candidate vertices.
      * @return The index of the nearest vertex from the specified vertex.
-     * @complexity O(C), where C is the number of candidates.
+     *
      */
     unsigned int getNearestVertex(unsigned int from, const std::unordered_set<unsigned int> &candidates) const;
 
     /**
-     * @brief Calculates the total distance of a tour within a cluster using a greedy algorithm.
+     * @brief Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity: O(N^2), where N is the number of vertices in the cluster.
      *
      * @param cluster A reference to a vector of unsigned integers representing the indices of vertices in the cluster.
      * @param clusterPath A reference to a vector of unsigned integers to store the tour path within the cluster.
      * @return The total distance of the tour within the cluster.
-     * @complexity O(N^2), where N is the number of vertices in the cluster.
+     *
      */
     double solveClusterTSP(const std::vector<unsigned int> &cluster, std::vector<unsigned int> &clusterPath) const;
 
     /**
      *
      *
-     * @brief Perform k-means clustering on the vertices of the graph.
+     * @brief Perform k-means clustering on the vertices of the graph. Complexity: O(V * k * T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence.
      *
      * @param clusters A reference to a vector of vectors of unsigned integers.
      * @param k The number of clusters to create.
      * @return void
-     * @complexity O(V * k * T), where V is the number of vertices, k is the
+     * Complexity: O(V * k * T), where V is the number of vertices, k is the
      *             number of clusters, and T is the number of iterations until
      *             convergence.
      */
