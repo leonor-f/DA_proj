@@ -1,8 +1,6 @@
 @startuml
-' Define templates
 !define T class T
 
-' Classes
 class Graph {
     ~Graph()
     +findVertex(NetworkPoint &in) : Vertex<NetworkPoint> *
@@ -113,7 +111,6 @@ class Edge<T> {
     -Edge<T> *reverse
 }
 
-' Relationships
 Graph -> "1..*" Vertex
 Vertex --> "1..*" Edge
 Vertex *- NetworkPoint

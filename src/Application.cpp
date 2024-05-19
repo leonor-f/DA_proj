@@ -213,7 +213,8 @@ void Application::other() {
 
     // calcular heurística
     vector<unsigned int> path;
-    double heuristicDist = network_->tspHeuristic(path);
+    // double heuristicDist = network_->tspHeuristic(path);
+    double heuristicDist = network_->tspRealWorld(path, true);
 
     clock_t end = clock();
 
@@ -233,18 +234,20 @@ void Application::other() {
     clock_t e = clock();
     double d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
 
+    if (!needToConnect) {
+        vector<unsigned int> p;
+        s = clock();
+        double minDist = network_->tspBT(p);
+        e = clock();
+        d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
+
+        cout << endl << "Difference from the backtracking: " << endl;
+        cout << " - Cost: " << heuristicDist - minDist << endl;
+        cout << " - Execution time: " << duration - d << endl;
+    }
+
     cout << endl << "Difference from the triangular: " << endl;
     cout << " - Cost: " << heuristicDist - total << endl;
-    cout << " - Execution time: " << duration - d << endl;
-
-    vector<unsigned int> p;
-    s = clock();
-    double minDist = network_->tspBT(p);
-    e = clock();
-    d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
-
-    cout << endl << "Difference from the backtracking: " << endl;
-    cout << " - Cost: " << heuristicDist - minDist << endl;
     cout << " - Execution time: " << duration - d << endl;
 
     goBack();
@@ -274,7 +277,7 @@ void Application::realWorld() {
     // calcular heurística
     vector<unsigned int> path;
     path.push_back(originVertex->getInfo().getId());
-    double total = network_->tspRealWorld(path);
+    double total = network_->tspRealWorld(path, false);
 
     clock_t end = clock();
 

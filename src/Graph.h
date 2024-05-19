@@ -99,6 +99,8 @@ public:
     bool removeEdge(const NetworkPoint &source, const NetworkPoint &dest);
     bool addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w);
 
+    double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
+
     int getNumVertex() const;
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() const;
 
@@ -142,8 +144,6 @@ public:
      * @complexity O(n), where n is the number of points in the vector.
      */
     double calculateTriangular(std::vector<NetworkPoint> g);
-
-    double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
 
     /**
      * @brief Recursive helper function for solving the Traveling Salesman Problem using backtracking.
@@ -233,12 +233,13 @@ public:
      * @param path A reference to a vector that will contain the order of visited vertices in the
      * resulting TSP path, starting from the initial vertex. The initial vertex is provided as the first
      * element in this vector. The vector is modified to include the full cycle.
+     * @param other If it is 4.3. or 4.4.
      * @return The total distance of the TSP path. If the graph is not connected or a cycle cannot
      * be formed, it returns -1.
      *
      * @complexity O(V^2), where V is the number of vertices.
      */
-    double tspRealWorld(std::vector<unsigned int> &path) const;
+    double tspRealWorld(std::vector<unsigned int> &path, bool other) const;
 
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set

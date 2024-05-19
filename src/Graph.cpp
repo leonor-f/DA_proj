@@ -641,17 +641,24 @@ unsigned int Graph::getNearestVertex(unsigned int from, const std::unordered_set
     return nearest;
 }
 
-double Graph::tspRealWorld(std::vector<unsigned int> &path) const {
-    if (!isConnected()) {
-        // grafo não é conectado
-        return -1;
+double Graph::tspRealWorld(std::vector<unsigned int> &path, bool other) const {
+    if (!other) {
+        if (!isConnected()) {
+            // grafo não é conectado
+            return -1;
+        }
     }
 
     std::unordered_set<unsigned int> visited;
 
-    //unsigned int current = vertexSet.begin()->first;
-    unsigned int current = path.at(0);
-    //path.push_back(current);
+    unsigned int current;
+    if (other) {
+        current = 0;
+        path.push_back(current);
+    } else {
+        current = path.at(0);
+    }
+
     visited.insert(current);
     double totalDist = 0.0;
 
@@ -665,7 +672,7 @@ double Graph::tspRealWorld(std::vector<unsigned int> &path) const {
                 next = neighbor;
             }
         }
-        if (next == 0) break; // não há mais vértices para visitar (grafo não é conectado)
+        if (next == 0) break; // não há mais vértices para visitar (grafo não é conectado) -> só para real world graphs
         path.push_back(next);
         visited.insert(next);
         totalDist += minDist;
@@ -677,7 +684,7 @@ double Graph::tspRealWorld(std::vector<unsigned int> &path) const {
         totalDist += returnEdge->getWeight();
         path.push_back(path[0]);
     } else {
-        // não há nenhum path que retorna ao vértice inicial
+        // não há nenhum path que retorna ao vértice inicial -> só para real world graphs
         return -1;
     }
 
