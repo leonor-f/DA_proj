@@ -148,12 +148,48 @@ public:
      */
     double tspBT(std::vector<unsigned int> &path) const;
 
+    /**
+     * @brief Solves the TSP using a heuristic approach based on clustering and greedy traversal.
+     *
+     * @param path A reference to a vector of unsigned integers to store the resulting TSP path.
+     * @return The total distance of the TSP tour.
+     * @complexity O(N^2), where N is the number of vertices in the graph.
+     */
     double tspHeuristic(std::vector<unsigned int> &path) const;
 
+    /**
+     * @brief Finds the nearest vertex from a specified vertex among a set of candidates.
+     *
+     * @param from The index of the vertex from which distances are measured.
+     * @param candidates A reference to an unordered set of unsigned integers representing
+     *        the indices of candidate vertices.
+     * @return The index of the nearest vertex from the specified vertex.
+     * @complexity O(C), where C is the number of candidates.
+     */
     unsigned int getNearestVertex(unsigned int from, const std::unordered_set<unsigned int> &candidates) const;
 
+    /**
+     * @brief Calculates the total distance of a tour within a cluster using a greedy algorithm.
+     *
+     * @param cluster A reference to a vector of unsigned integers representing the indices of vertices in the cluster.
+     * @param clusterPath A reference to a vector of unsigned integers to store the tour path within the cluster.
+     * @return The total distance of the tour within the cluster.
+     * @complexity O(N^2), where N is the number of vertices in the cluster.
+     */
     double solveClusterTSP(const std::vector<unsigned int> &cluster, std::vector<unsigned int> &clusterPath) const;
 
+    /**
+     *
+     *
+     * @brief Perform k-means clustering on the vertices of the graph.
+     *
+     * @param clusters A reference to a vector of vectors of unsigned integers.
+     * @param k The number of clusters to create.
+     * @return void
+     * @complexity O(V * k * T), where V is the number of vertices, k is the
+     *             number of clusters, and T is the number of iterations until
+     *             convergence.
+     */
     void clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const;
 
 protected:
