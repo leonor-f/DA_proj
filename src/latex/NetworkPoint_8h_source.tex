@@ -1,0 +1,26 @@
+\hypertarget{NetworkPoint_8h_source}{}\doxysection{Network\+Point.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef SRC\_NETWORKPOINT\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define SRC\_NETWORKPOINT\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 }
+\DoxyCodeLine{5 \textcolor{keyword}{class }\mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \{}
+\DoxyCodeLine{6     \textcolor{keywordtype}{unsigned} id\_;}
+\DoxyCodeLine{7     \textcolor{keywordtype}{double} lat\_; \textcolor{comment}{// latitude}}
+\DoxyCodeLine{8     \textcolor{keywordtype}{double} lon\_; \textcolor{comment}{// longitude}}
+\DoxyCodeLine{9 \textcolor{keyword}{public}:}
+\DoxyCodeLine{10     \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{id});}
+\DoxyCodeLine{11     \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} lat, \textcolor{keywordtype}{double} lon);}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13     [[nodiscard]] \textcolor{keywordtype}{unsigned} getId() \textcolor{keyword}{const};}
+\DoxyCodeLine{14     [[nodiscard]] \textcolor{keywordtype}{double} getLat() \textcolor{keyword}{const};}
+\DoxyCodeLine{15     [[nodiscard]] \textcolor{keywordtype}{double} getLon() \textcolor{keyword}{const};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&other);}
+\DoxyCodeLine{18 \};}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//SRC\_NETWORKPOINT\_H}}
+
+\end{DoxyCode}
