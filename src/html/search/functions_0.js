@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['clustering_21',['clustering',['../classGraph.html#a905a6e1157a4e0cf21160bf684a71437',1,'Graph']]]
+  ['aproxtsp_0',['aproxTSP',['../classGraph.html#a3bd0cf107e642f3a8da6f41563be35f4',1,'Graph']]]
 ];

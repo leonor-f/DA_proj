@@ -1,0 +1,36 @@
+\hypertarget{Application_8h_source}{}\doxysection{Application.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PROJ2\_APPLICATION\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define PROJ2\_APPLICATION\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}FileReader.h"{}}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include "{}Graph.h"{}}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{class }\mbox{\hyperlink{classApplication}{Application}} \{}
+\DoxyCodeLine{10     \mbox{\hyperlink{classGraph}{Graph}} *network\_;}
+\DoxyCodeLine{11     \mbox{\hyperlink{classFileReader}{FileReader}} file;}
+\DoxyCodeLine{12     \mbox{\hyperlink{classFileReader}{FileReader}} nodes;}
+\DoxyCodeLine{13     \textcolor{keywordtype}{void} fullyConnectGraph();}
+\DoxyCodeLine{14     \textcolor{keywordtype}{bool} needToConnect;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{public}:}
+\DoxyCodeLine{17     \mbox{\hyperlink{classApplication}{Application}}();}
+\DoxyCodeLine{18     \textcolor{keywordtype}{void} menu();}
+\DoxyCodeLine{19     \textcolor{keywordtype}{void} loadData();}
+\DoxyCodeLine{20     \textcolor{keywordtype}{void} backtracking();}
+\DoxyCodeLine{21     \textcolor{keywordtype}{void} triangular();}
+\DoxyCodeLine{22     \textcolor{keywordtype}{void} other();}
+\DoxyCodeLine{23     \textcolor{keywordtype}{void} realWorld();}
+\DoxyCodeLine{24     \textcolor{keywordtype}{void} goBack();}
+\DoxyCodeLine{25     \textcolor{keywordtype}{void} loadToyGraph();}
+\DoxyCodeLine{26     \textcolor{keywordtype}{void} loadMediumGraph();}
+\DoxyCodeLine{27     \textcolor{keywordtype}{void} loadRealGraph();}
+\DoxyCodeLine{28     \textcolor{keywordtype}{bool} isFileRead;}
+\DoxyCodeLine{29 \};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PROJ2\_APPLICATION\_H}}
+
+\end{DoxyCode}

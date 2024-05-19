@@ -1,0 +1,144 @@
+\hypertarget{Graph_8h_source}{}\doxysection{Graph.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef GRAPH\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define GRAPH\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <float.h>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}NetworkPoint.h"{}}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <unordered\_set>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{15 \textcolor{keyword}{class }\mbox{\hyperlink{classEdge}{Edge}};}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{comment}{/************************* Vertex  **************************/}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classVertex}{Vertex}} \{}
+\DoxyCodeLine{21 \textcolor{keyword}{public}:}
+\DoxyCodeLine{22     \mbox{\hyperlink{classVertex}{Vertex}}(T in);}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24     T getInfo() \textcolor{keyword}{const};}
+\DoxyCodeLine{25     std::vector<Edge<T> *> getAdj() \textcolor{keyword}{const};}
+\DoxyCodeLine{26     \textcolor{keywordtype}{bool} isVisited() \textcolor{keyword}{const};}
+\DoxyCodeLine{27     \textcolor{keywordtype}{double} getDist() \textcolor{keyword}{const};}
+\DoxyCodeLine{28     \mbox{\hyperlink{classEdge}{Edge<T>}} *getPath() \textcolor{keyword}{const};}
+\DoxyCodeLine{29     std::vector<Edge<T> *> getIncoming() \textcolor{keyword}{const};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keywordtype}{void} setInfo(T info);}
+\DoxyCodeLine{32     \textcolor{keywordtype}{void} setVisited(\textcolor{keywordtype}{bool} visited);}
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} setDist(\textcolor{keywordtype}{double} dist);}
+\DoxyCodeLine{34     \textcolor{keywordtype}{void} setPath(\mbox{\hyperlink{classEdge}{Edge<T>}} *path);}
+\DoxyCodeLine{35     \mbox{\hyperlink{classEdge}{Edge<T>}} * addEdge(\mbox{\hyperlink{classVertex}{Vertex<T>}} *dest, \textcolor{keywordtype}{double} w);}
+\DoxyCodeLine{36     \textcolor{keywordtype}{bool} removeEdge(T in);}
+\DoxyCodeLine{37     \textcolor{keywordtype}{void} removeOutgoingEdges();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39     \textcolor{keyword}{const} \mbox{\hyperlink{classEdge}{Edge<T>}} *getEdge(\textcolor{keyword}{const} \mbox{\hyperlink{classVertex}{Vertex<T>}} *dest) \textcolor{keyword}{const};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{42     T info;                \textcolor{comment}{// info node}}
+\DoxyCodeLine{43     std::vector<Edge<T> *> adj;  \textcolor{comment}{// outgoing edges}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \textcolor{comment}{// auxiliary fields}}
+\DoxyCodeLine{46     \textcolor{keywordtype}{bool} visited = \textcolor{keyword}{false}; \textcolor{comment}{// used by DFS, BFS, Prim ...}}
+\DoxyCodeLine{47     \textcolor{keywordtype}{double} dist = 0;}
+\DoxyCodeLine{48     \mbox{\hyperlink{classEdge}{Edge<T>}} *path = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     std::vector<Edge<T> *> incoming; \textcolor{comment}{// incoming edges}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52     \textcolor{keywordtype}{void} deleteEdge(\mbox{\hyperlink{classEdge}{Edge<T>}} *edge);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{comment}{/********************** Edge  ****************************/}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{59 \textcolor{keyword}{class }\mbox{\hyperlink{classEdge}{Edge}} \{}
+\DoxyCodeLine{60 \textcolor{keyword}{public}:}
+\DoxyCodeLine{61     \mbox{\hyperlink{classEdge}{Edge}}(\mbox{\hyperlink{classVertex}{Vertex<T>}} *orig, \mbox{\hyperlink{classVertex}{Vertex<T>}} *dest, \textcolor{keywordtype}{double} w);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63     \mbox{\hyperlink{classVertex}{Vertex<T>}} * getDest() \textcolor{keyword}{const};}
+\DoxyCodeLine{64     \textcolor{keywordtype}{double} getWeight() \textcolor{keyword}{const};}
+\DoxyCodeLine{65     \mbox{\hyperlink{classVertex}{Vertex<T>}} * getOrig() \textcolor{keyword}{const};}
+\DoxyCodeLine{66     \mbox{\hyperlink{classEdge}{Edge<T>}} *getReverse() \textcolor{keyword}{const};}
+\DoxyCodeLine{67     \textcolor{keywordtype}{void} setReverse(\mbox{\hyperlink{classEdge}{Edge<T>}} *reverse);}
+\DoxyCodeLine{68 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{69     \mbox{\hyperlink{classVertex}{Vertex<T>}} * dest; \textcolor{comment}{// destination vertex}}
+\DoxyCodeLine{70     \textcolor{keywordtype}{double} weight; \textcolor{comment}{// edge weight, can also be used for capacity}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \textcolor{comment}{// used for bidirectional edges}}
+\DoxyCodeLine{73     \mbox{\hyperlink{classVertex}{Vertex<T>}} *orig;}
+\DoxyCodeLine{74     \mbox{\hyperlink{classEdge}{Edge<T>}} *reverse = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{75 \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{comment}{/********************** Graph  ****************************/}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keyword}{class }\mbox{\hyperlink{classGraph}{Graph}} \{}
+\DoxyCodeLine{80 \textcolor{keyword}{public}:}
+\DoxyCodeLine{81     \mbox{\hyperlink{classGraph}{\string~Graph}}();}
+\DoxyCodeLine{82     \textcolor{comment}{/*}}
+\DoxyCodeLine{83 \textcolor{comment}{    * Auxiliary function to find a vertex with a given the content.}}
+\DoxyCodeLine{84 \textcolor{comment}{    */}}
+\DoxyCodeLine{85     \mbox{\hyperlink{classVertex}{Vertex<NetworkPoint>}} *findVertex(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&in) \textcolor{keyword}{const};}
+\DoxyCodeLine{86     \textcolor{comment}{/*}}
+\DoxyCodeLine{87 \textcolor{comment}{     *  Adds a vertex with a given content or info (in) to a graph (this).}}
+\DoxyCodeLine{88 \textcolor{comment}{     *  Returns true if successful, and false if a vertex with that content already exists.}}
+\DoxyCodeLine{89 \textcolor{comment}{     */}}
+\DoxyCodeLine{90     \textcolor{keywordtype}{bool} addVertex(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&in);}
+\DoxyCodeLine{91     \textcolor{keywordtype}{bool} removeVertex(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&in);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     \textcolor{comment}{/*}}
+\DoxyCodeLine{94 \textcolor{comment}{     * Adds an edge to a graph (this), given the contents of the source and}}
+\DoxyCodeLine{95 \textcolor{comment}{     * destination vertices and the edge weight (w).}}
+\DoxyCodeLine{96 \textcolor{comment}{     * Returns true if successful, and false if the source or destination vertex does not exist.}}
+\DoxyCodeLine{97 \textcolor{comment}{     */}}
+\DoxyCodeLine{98     \textcolor{keywordtype}{bool} addEdge(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&sourc, \textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&dest, \textcolor{keywordtype}{double} w);}
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} removeEdge(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&source, \textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&dest);}
+\DoxyCodeLine{100     \textcolor{keywordtype}{bool} addBidirectionalEdge(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&sourc, \textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&dest, \textcolor{keywordtype}{double} w);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     \textcolor{keywordtype}{int} getNumVertex() \textcolor{keyword}{const};}
+\DoxyCodeLine{103     std::unordered\_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() \textcolor{keyword}{const};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     \textcolor{keywordtype}{void} dfsVisit(\mbox{\hyperlink{classVertex}{Vertex<NetworkPoint>}} *v,  std::vector<NetworkPoint> \& res) \textcolor{keyword}{const};}
+\DoxyCodeLine{106     \textcolor{keywordtype}{bool} isConnected() \textcolor{keyword}{const};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{117     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_a8772e80e7715910f0622b57c62015ce4}{haversine}}(\textcolor{keywordtype}{double} lat1, \textcolor{keywordtype}{double} lon1, \textcolor{keywordtype}{double} lat2, \textcolor{keywordtype}{double} lon2) \textcolor{keyword}{const};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{124     std::vector<NetworkPoint> \mbox{\hyperlink{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}{aproxTSP}}();}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{132     \mbox{\hyperlink{classGraph}{Graph}} \mbox{\hyperlink{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}{computeMST}}(\mbox{\hyperlink{classVertex}{Vertex<NetworkPoint>}} *root);}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{140     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}{calculateTriangular}}(std::vector<NetworkPoint> g);}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \textcolor{keywordtype}{double} getEdgeWeight(\textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&a, \textcolor{keyword}{const} \mbox{\hyperlink{classNetworkPoint}{NetworkPoint}} \&b) \textcolor{keyword}{const};}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{158     \textcolor{keywordtype}{void} \mbox{\hyperlink{classGraph_a34a15ba924c601f35b18fe8335437aae}{tspBTRec}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} curIndex, \textcolor{keywordtype}{double} curDist, std::vector<unsigned int> \&curPath, \textcolor{keywordtype}{double} \&minDist,}
+\DoxyCodeLine{159                   std::vector<unsigned int> \&path) \textcolor{keyword}{const};}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{172     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_a8a5129f6a2b6eb2f7ceadf6125af6cd3}{tspBT}}(std::vector<unsigned int> \&path) \textcolor{keyword}{const};}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{181     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_aff1956ec0183c9d9c7871b15b91bd1db}{tspHeuristic}}(std::vector<unsigned int> \&path) \textcolor{keyword}{const};}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{192     \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \mbox{\hyperlink{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}{getNearestVertex}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} from, \textcolor{keyword}{const} std::unordered\_set<unsigned int> \&candidates) \textcolor{keyword}{const};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{202     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}{solveClusterTSP}}(\textcolor{keyword}{const} std::vector<unsigned int> \&cluster, std::vector<unsigned int> \&clusterPath) \textcolor{keyword}{const};}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{215     \textcolor{keywordtype}{void} \mbox{\hyperlink{classGraph_a89eb9a1b06d720c9998a85f07ab207c8}{clustering}}(std::vector<std::vector<unsigned int>> \&clusters, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} k) \textcolor{keyword}{const};}
+\DoxyCodeLine{216 }
+\DoxyCodeLine{231     \textcolor{keywordtype}{double} \mbox{\hyperlink{classGraph_a78e09ada85e9dc40d87366f8012a1252}{tspRealWorld}}(std::vector<unsigned int> \&path) \textcolor{keyword}{const};}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{234     std::unordered\_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    \textcolor{comment}{// vertex set}}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 \};}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//GRAPH\_H}}
+
+\end{DoxyCode}
