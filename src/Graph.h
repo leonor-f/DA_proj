@@ -14,8 +14,6 @@
 template <class T>
 class Edge;
 
-#define INF std::numeric_limits<double>::max()
-
 /************************* Vertex  **************************/
 
 template <class T>
@@ -26,16 +24,12 @@ public:
     T getInfo() const;
     std::vector<Edge<T> *> getAdj() const;
     bool isVisited() const;
-    bool isProcessing() const;
-    unsigned int getIndegree() const;
     double getDist() const;
     Edge<T> *getPath() const;
     std::vector<Edge<T> *> getIncoming() const;
 
     void setInfo(T info);
     void setVisited(bool visited);
-    void setProcesssing(bool processing);
-    void setIndegree(unsigned int indegree);
     void setDist(double dist);
     void setPath(Edge<T> *path);
     Edge<T> * addEdge(Vertex<T> *dest, double w);
@@ -50,8 +44,6 @@ protected:
 
     // auxiliary fields
     bool visited = false; // used by DFS, BFS, Prim ...
-    bool processing = false; // used by isDAG (in addition to the visited attribute)
-    unsigned int indegree; // used by topsort
     double dist = 0;
     Edge<T> *path = nullptr;
 
@@ -70,26 +62,16 @@ public:
 
     Vertex<T> * getDest() const;
     double getWeight() const;
-    bool isSelected() const;
     Vertex<T> * getOrig() const;
     Edge<T> *getReverse() const;
-    double getFlow() const;
-
-    void setSelected(bool selected);
     void setReverse(Edge<T> *reverse);
-    void setFlow(double flow);
 protected:
     Vertex<T> * dest; // destination vertex
     double weight; // edge weight, can also be used for capacity
 
-    // auxiliary fields
-    bool selected = false;
-
     // used for bidirectional edges
     Vertex<T> *orig;
     Edge<T> *reverse = nullptr;
-
-    double flow; // for flow-related problems
 };
 
 /********************** Graph  ****************************/
@@ -117,8 +99,6 @@ public:
     bool removeEdge(const NetworkPoint &source, const NetworkPoint &dest);
     bool addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w);
 
-    Edge<NetworkPoint> *getNearestNeighbor(Vertex<NetworkPoint> *v) const;
-
     int getNumVertex() const;
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() const;
 
@@ -129,13 +109,6 @@ public:
 
     bool isDAG() const;
     bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
-    std::vector<NetworkPoint> topsort() const;
-    /**
-     * @brief Auxiliary function to copy a graph.
-     * @Complexity O(V + E)
-     * @return A pointer to the new graph.
-     */
-    Graph * copyGraph();
 
     double haversine(double lat1, double lon1, double lat2, double lon2) const;
 
@@ -185,9 +158,6 @@ public:
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
 };
-
-void deleteMatrix(int **m, int n);
-void deleteMatrix(double **m, int n);
 
 
 #endif //GRAPH_H

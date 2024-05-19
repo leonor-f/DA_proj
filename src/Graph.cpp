@@ -80,16 +80,6 @@ bool Vertex<T>::isVisited() const {
 }
 
 template<class T>
-bool Vertex<T>::isProcessing() const {
-    return this->processing;
-}
-
-template<class T>
-unsigned int Vertex<T>::getIndegree() const {
-    return this->indegree;
-}
-
-template<class T>
 double Vertex<T>::getDist() const {
     return this->dist;
 }
@@ -112,16 +102,6 @@ void Vertex<T>::setInfo(T in) {
 template<class T>
 void Vertex<T>::setVisited(bool visited) {
     this->visited = visited;
-}
-
-template<class T>
-void Vertex<T>::setProcesssing(bool processing) {
-    this->processing = processing;
-}
-
-template<class T>
-void Vertex<T>::setIndegree(unsigned int indegree) {
-    this->indegree = indegree;
 }
 
 template<class T>
@@ -175,28 +155,8 @@ Edge<T> *Edge<T>::getReverse() const {
 }
 
 template<class T>
-bool Edge<T>::isSelected() const {
-    return this->selected;
-}
-
-template<class T>
-double Edge<T>::getFlow() const {
-    return flow;
-}
-
-template<class T>
-void Edge<T>::setSelected(bool selected) {
-    this->selected = selected;
-}
-
-template<class T>
 void Edge<T>::setReverse(Edge<T> *reverse) {
     this->reverse = reverse;
-}
-
-template<class T>
-void Edge<T>::setFlow(double flow) {
-    this->flow = flow;
 }
 
 /********************** Graph  ****************************/
@@ -308,48 +268,14 @@ bool Graph::addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &
     return true;
 }
 
-Edge<NetworkPoint> *Graph::getNearestNeighbor(Vertex<NetworkPoint> *v) const {
-    for (auto e: v->getAdj())
-        if (!e->getDest()->isVisited())
-            return e;
-    return nullptr;
-}
-
-/****************** DFS ********************/
-
-/*
- * Performs a depth-first search (dfs) traversal in a graph (this).
- * Returns a vector with the contents of the vertices by dfs order.
- */
-std::vector<NetworkPoint> Graph::dfs() const {
-    std::vector<NetworkPoint> res;
-    for (auto v: vertexSet)
-        v.second->setVisited(false);
-    for (auto v: vertexSet)
-        if (!v.second->isVisited())
-            dfsVisit(v.second, res);
-    return res;
-}
-
-/*
- * Performs a depth-first search (dfs) in a graph (this) from the source node.
- * Returns a vector with the contents of the vertices by dfs order.
- */
-std::vector<NetworkPoint> Graph::dfs(const NetworkPoint &source) const {
-    std::vector<NetworkPoint> res;
-    // Get the source vertex
-    auto s = findVertex(source);
-    if (s == nullptr) {
-        return res;
-    }
-    // Set that no vertex has been visited yet
-    for (auto v: vertexSet) {
-        v.second->setVisited(false);
-    }
-    // Perform the actual DFS using recursion
-    dfsVisit(s, res);
-
-    return res;
+Graph::~Graph() {
+    //deleteMatrix(distanceMatrix_, vertexSet.size());
+    /*if (!vertexSet.empty()) {
+        for (auto &v: vertexSet) {
+            removeVertex(v.second->getInfo());
+        }
+        vertexSet.clear();
+    }*/
 }
 
 /*
@@ -367,134 +293,6 @@ void Graph::dfsVisit(Vertex<NetworkPoint> *v, std::vector<NetworkPoint> &res) co
     }
 }
 
-/****************** BFS ********************/
-/*
- * Performs a breadth-first search (bfs) in a graph (this), starting
- * from the vertex with the given source contents (source).
- * Returns a vector with the contents of the vertices by bfs order.
- */
-std::vector<NetworkPoint> Graph::bfs(const NetworkPoint &source) const {
-    std::vector<NetworkPoint> res;
-    // Get the source vertex
-    auto s = findVertex(source);
-    if (s == nullptr) {
-        return res;
-    }
-
-    // Set that no vertex has been visited yet
-    for (auto v: vertexSet) {
-        v.second->setVisited(false);
-    }
-
-    // Perform the actual BFS using a queue
-    std::queue<Vertex<NetworkPoint> *> q;
-    q.push(s);
-    s->setVisited(true);
-    while (!q.empty()) {
-        auto v = q.front();
-        q.pop();
-        res.push_back(v->getInfo());
-        for (auto &e: v->getAdj()) {
-            auto w = e->getDest();
-            if (!w->isVisited()) {
-                q.push(w);
-                w->setVisited(true);
-            }
-        }
-    }
-    return res;
-}
-
-/****************** isDAG  ********************/
-/*
- * Performs a depth-first search in a graph (this), to determine if the graph
- * is acyclic (acyclic directed graph or DAG).
- * During the search, a cycle is found if an edge connects to a vertex
- * that is being processed in the stack of recursive calls (see theoretical classes).
- * Returns true if the graph is acyclic, and false otherwise.
- */
-
-bool Graph::isDAG() const {
-    for (auto v: vertexSet) {
-        v.second->setVisited(false);
-        v.second->setProcesssing(false);
-    }
-    for (auto v: vertexSet) {
-        if (!v.second->isVisited()) {
-            if (!dfsIsDAG(v.second)) return false;
-        }
-    }
-    return true;
-}
-
-/**
- * Auxiliary function that visits a vertex (v) and its adjacent, recursively.
- * Returns false (not acyclic) if an edge to a vertex in the stack is found.
- */
-bool Graph::dfsIsDAG(Vertex<NetworkPoint> *v) const {
-    v->setVisited(true);
-    v->setProcesssing(true);
-    for (auto e: v->getAdj()) {
-        auto w = e->getDest();
-        if (w->isProcessing()) return false;
-        if (!w->isVisited()) {
-            if (!dfsIsDAG(w)) return false;
-        }
-    }
-    v->setProcesssing(false);
-    return true;
-}
-
-/****************** toposort ********************/
-/*
- * Performs a topological sorting of the vertices of a graph (this).
- * Returns a vector with the contents of the vertices by topological order.
- * If the graph has cycles, returns an empty vector.
- * Follows the algorithm described in theoretical classes.
- */
-
-std::vector<NetworkPoint> Graph::topsort() const {
-    std::vector<NetworkPoint> res;
-
-    for (auto v: vertexSet) {
-        v.second->setIndegree(0);
-    }
-    for (auto v: vertexSet) {
-        for (auto e: v.second->getAdj()) {
-            unsigned int indegree = e->getDest()->getIndegree();
-            e->getDest()->setIndegree(indegree + 1);
-        }
-    }
-
-    std::queue<Vertex<NetworkPoint> *> q;
-    for (auto v: vertexSet) {
-        if (v.second->getIndegree() == 0) {
-            q.push(v.second);
-        }
-    }
-
-    while (!q.empty()) {
-        Vertex<NetworkPoint> *v = q.front();
-        q.pop();
-        res.push_back(v->getInfo());
-        for (auto e: v->getAdj()) {
-            auto w = e->getDest();
-            w->setIndegree(w->getIndegree() - 1);
-            if (w->getIndegree() == 0) {
-                q.push(w);
-            }
-        }
-    }
-
-    if (res.size() != vertexSet.size()) {
-        //std::cout << "Impossible topological ordering!" << std::endl;
-        res.clear();
-        return res;
-    }
-
-    return res;
-}
-
 void preOrderTraversal(Graph &MST, Vertex<NetworkPoint> *current, std::vector<NetworkPoint> &L) {
     if (current == nullptr)
         return;
@@ -507,92 +305,6 @@ void preOrderTraversal(Graph &MST, Vertex<NetworkPoint> *current, std::vector<Ne
     }
 }
 
-std::vector<NetworkPoint> Graph::aproxTSP() {
-    auto root = vertexSet.begin()->second;
-    std::unordered_set<unsigned> visited;
-    std::vector<NetworkPoint> tour;
-
-    Graph mst = computeMST(root);
-
-    auto mst_root = mst.findVertex(root->getInfo());
-
-    std::vector<NetworkPoint> l;
-
-    preOrderTraversal(mst, mst_root, l);
-
-    for (const auto &vertex: l) {
-        if (visited.find(vertex.getId()) == visited.end()) {
-            tour.push_back(vertex);
-            visited.insert(vertex.getId());
-        }
-    }
-
-    return tour;
-
-}
-
-struct EdgeComparator {
-    bool operator()(const Edge<NetworkPoint> *lhs, const Edge<NetworkPoint> *rhs) const {
-        // Compare edges based on their weights
-        return lhs->getWeight() > rhs->getWeight();
-    }
-};
-
-//this function is working as intended
-Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
-    Graph MST;
-
-    if (root == nullptr)
-        return MST;
-
-    std::priority_queue<Edge<NetworkPoint> *, std::vector<Edge<NetworkPoint> *>, EdgeComparator> pq;
-
-    // Set to track visited vertices
-    std::unordered_set<Vertex<NetworkPoint> *> visited;
-    visited.insert(root);
-
-    // Add all edges incident to the root vertex to the priority queue
-    for (auto edge: root->getAdj()) {
-        pq.push(edge);
-    }
-
-    // Add the root vertex to the MST
-    MST.addVertex(root->getInfo());
-
-    // Main loop of Prim's algorithm
-    while (!pq.empty()) {
-        // Get the edge with the smallest weight
-        Edge<NetworkPoint> *minEdge = pq.top();
-        pq.pop();
-
-        // Get the destination vertex of the edge
-        Vertex<NetworkPoint> *destVertex = minEdge->getDest();
-
-        // If the destination vertex is already visited, skip this edge
-        if (visited.find(destVertex) != visited.end()) {
-            continue;
-        }
-
-        // Add the destination vertex to the MST
-        MST.addVertex(destVertex->getInfo());
-
-        // Add the edge to the MST
-        MST.addEdge(minEdge->getOrig()->getInfo(), destVertex->getInfo(), minEdge->getWeight());
-
-        // Mark the destination vertex as visited
-        visited.insert(destVertex);
-
-        // Add all edges incident to the destination vertex to the priority queue
-        for (auto edge: destVertex->getAdj()) {
-            if (visited.find(edge->getDest()) == visited.end()) {
-                pq.push(edge);
-            }
-        }
-    }
-
-    return MST;
-}
-
 double Graph::getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const {
     auto vertex = findVertex(a);
     for (const auto &edge: vertex->getAdj()) {
@@ -603,59 +315,12 @@ double Graph::getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const 
     return 0;
 }
 
-
-inline void deleteMatrix(int **m, int n) {
-    if (m != nullptr) {
-        for (int i = 0; i < n; i++)
-            if (m[i] != nullptr)
-                delete[] m[i];
-        delete[] m;
+struct EdgeComparator {
+    bool operator()(const Edge<NetworkPoint> *lhs, const Edge<NetworkPoint> *rhs) const {
+        // Compare edges based on their weights
+        return lhs->getWeight() > rhs->getWeight();
     }
-}
-
-inline void deleteMatrix(double **m, int n) {
-    if (m != nullptr) {
-        for (int i = 0; i < n; i++)
-            if (m[i] != nullptr)
-                delete[] m[i];
-        delete[] m;
-    }
-}
-
-Graph::~Graph() {
-    //deleteMatrix(distanceMatrix_, vertexSet.size());
-    /*if (!vertexSet.empty()) {
-        for (auto &v: vertexSet) {
-            removeVertex(v.second->getInfo());
-        }
-        vertexSet.clear();
-    }*/
-}
-
-Graph *Graph::copyGraph() {
-    Graph *newGraph = new Graph();
-
-    // Copy vertices
-    for (const auto &p: vertexSet) {
-        auto v = p.second;
-
-        newGraph->addVertex(v->getInfo());
-    }
-
-    // Copy edges
-    for (const auto &p: vertexSet) {
-        auto v = p.second;
-
-        for (auto e: v->getAdj()) {
-            auto src = e->getOrig()->getInfo();
-            auto dest = e->getDest()->getInfo();
-
-            newGraph->addEdge(src, dest, e->getWeight());
-        }
-    }
-    // newGraph->updateAllVerticesFlow();
-    return newGraph;
-}
+};
 
 double convertToRadians(double degree) {
     return degree * M_PI / 180.0;
@@ -726,150 +391,83 @@ double Graph::tspBT(std::vector<unsigned int> &path) const {
     return minDist;
 }
 
+std::vector<NetworkPoint> Graph::aproxTSP() {
+    //auto root = vertexSet.begin()->second;
+    auto root = findVertex(NetworkPoint(0));
+    std::unordered_set<unsigned> visited;
+    std::vector<NetworkPoint> tour;
 
-// CLUSTERING
+    Graph mst = computeMST(root);
 
-/*struct Cluster {
-    std::vector<Vertex<NetworkPoint> *> vertices;
-};
+    auto mst_root = mst.findVertex(root->getInfo());
 
-// Function to compute the distance between two clusters
-double compute_cluster_distance(Cluster &cluster1, Cluster &cluster2) {
-    double min_distance = std::numeric_limits<double>::infinity();
-    for (const auto &v1: cluster1.vertices) {
-        for (const auto &v2: cluster2.vertices) {
-            double distance = haversine(v1->getInfo().getLat(), v1->getInfo().getLon(), v2->getInfo().getLat(),
-                                        v2->getInfo().getLon());
-            if (distance < min_distance) {
-                min_distance = distance;
-            }
+    std::vector<NetworkPoint> l;
+
+    preOrderTraversal(mst, mst_root, l);
+
+    for (const auto &vertex: l) {
+        if (visited.find(vertex.getId()) == visited.end()) {
+            tour.push_back(vertex);
+            visited.insert(vertex.getId());
         }
     }
-    return min_distance;
+
+    return tour;
 }
 
-// Function to perform hierarchical clustering on a graph
-std::vector<Cluster> hierarchical_clustering(const Graph &graph, int num_clusters) {
-    // Initialize clusters with each vertex as a separate cluster
-    std::vector<Cluster> clusters;
-    for (const auto &entry: graph.getVertexSet()) {
-        Cluster cluster;
-        cluster.vertices.push_back(entry.second);
-        clusters.push_back(cluster);
+Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
+    Graph MST;
+
+    if (root == nullptr)
+        return MST;
+
+    std::priority_queue<Edge<NetworkPoint> *, std::vector<Edge<NetworkPoint> *>, EdgeComparator> pq;
+
+    // Set to track visited vertices
+    std::unordered_set<Vertex<NetworkPoint> *> visited;
+    visited.insert(root);
+
+    // Add all edges incident to the root vertex to the priority queue
+    for (auto edge: root->getAdj()) {
+        pq.push(edge);
     }
 
-    // Perform hierarchical clustering until the desired number of clusters is reached
-    while (clusters.size() > num_clusters) {
-        // Find the closest pair of clusters
-        double min_distance = std::numeric_limits<double>::infinity();
-        int closest_cluster1 = -1, closest_cluster2 = -1;
-        for (int i = 0; i < clusters.size(); ++i) {
-            for (int j = i + 1; j < clusters.size(); ++j) {
-                // Compute the distance between the centroids of the clusters
-                double distance = compute_cluster_distance(clusters[i], clusters[j]); // Implement this function
+    // Add the root vertex to the MST
+    MST.addVertex(root->getInfo());
 
-                // Update the closest pair of clusters
-                if (distance < min_distance) {
-                    min_distance = distance;
-                    closest_cluster1 = i;
-                    closest_cluster2 = j;
-                }
-            }
+    // Main loop of Prim's algorithm
+    while (!pq.empty()) {
+        // Get the edge with the smallest weight
+        Edge<NetworkPoint> *minEdge = pq.top();
+        pq.pop();
+
+        // Get the destination vertex of the edge
+        Vertex<NetworkPoint> *destVertex = minEdge->getDest();
+
+        // If the destination vertex is already visited, skip this edge
+        if (visited.find(destVertex) != visited.end()) {
+            continue;
         }
 
-        // Merge the closest pair of clusters
-        clusters[closest_cluster1].vertices.insert(clusters[closest_cluster1].vertices.end(),
-                                                   clusters[closest_cluster2].vertices.begin(),
-                                                   clusters[closest_cluster2].vertices.end());
-        clusters.erase(clusters.begin() + closest_cluster2);
+        // Add the destination vertex to the MST
+        MST.addVertex(destVertex->getInfo());
+
+        // Add the edge to the MST
+        MST.addEdge(minEdge->getOrig()->getInfo(), destVertex->getInfo(), minEdge->getWeight());
+
+        // Mark the destination vertex as visited
+        visited.insert(destVertex);
+
+        // Add all edges incident to the destination vertex to the priority queue
+        for (auto edge: destVertex->getAdj()) {
+            if (visited.find(edge->getDest()) == visited.end()) {
+                pq.push(edge);
+            }
+        }
     }
 
-    return clusters;
+    return MST;
 }
-
-// Function to perform k-means clustering on a graph with dynamic number of clusters based on maximum number of vertices per cluster
-[[maybe_unused]] vector<Cluster> k_means_clustering(const Graph &graph, int max_clusters) {
-    // Initialize clusters
-    vector<Cluster> clusters;
-
-    // Initialize centroids with random vertices from the graph
-    vector<Vertex<NetworkPoint> *> centroids;
-    // Add code to randomly select initial centroids
-    // ...
-
-    // Initialize the maximum number of vertices per cluster
-    const int max_vertices_per_cluster = ceil(graph.getNumVertex() / static_cast<double>(max_clusters));
-
-    // Iterate until all vertices are assigned to clusters
-    while (!centroids.empty()) {
-        // Create a new cluster
-        Cluster cluster;
-
-        // Randomly select a centroid
-        Vertex<NetworkPoint> *centroid = centroids.back();
-        centroids.pop_back();
-        cluster.vertices.push_back(centroid);
-
-        // Assign vertices to the current cluster until it reaches the maximum number of vertices
-        while (cluster.vertices.size() < max_vertices_per_cluster) {
-            // Find the nearest unassigned vertex to the current centroid
-            double min_distance = numeric_limits<double>::infinity();
-            Vertex<NetworkPoint> *nearest_vertex = nullptr;
-            for (const auto &entry: graph.getVertexSet()) {
-                Vertex<NetworkPoint> *vertex = entry.second;
-                // Check if the vertex is unassigned
-                if (find(cluster.vertices.begin(), cluster.vertices.end(), vertex) == cluster.vertices.end()) {
-                    auto v1 = centroid->getInfo();
-                    auto v2 = vertex->getInfo();
-                    double distance = haversine(v1.getLat(), v1.getLon(),
-                                                v2.getLat(), v2.getLon());
-                    if (distance < min_distance) {
-                        min_distance = distance;
-                        nearest_vertex = vertex;
-                    }
-                }
-            }
-
-            // Add the nearest unassigned vertex to the current cluster
-            if (nearest_vertex != nullptr) {
-                cluster.vertices.push_back(nearest_vertex);
-            }
-        }
-
-        // Add the current cluster to the list of clusters
-        clusters.push_back(cluster);
-    }
-
-    // Assign remaining vertices to the nearest clusters
-    for (const auto &entry: graph.getVertexSet()) {
-        Vertex<NetworkPoint> *vertex = entry.second;
-        // Check if the vertex is unassigned
-        if (none_of(clusters.begin(), clusters.end(), [&](const Cluster &cluster) {
-            return find(cluster.vertices.begin(), cluster.vertices.end(), vertex) != cluster.vertices.end();
-        })) {
-            // Find the cluster whose centroid is closest to the vertex
-            double min_distance = numeric_limits<double>::infinity();
-            Cluster *nearest_cluster = nullptr;
-            for (auto &cluster: clusters) {
-                auto v1 = cluster.vertices[0]->getInfo();
-                auto v2 = vertex->getInfo();
-                double distance = haversine(v1.getLat(), v1.getLon(),
-                                            v2.getLat(), v2.getLon()); // Assuming the first vertex is the centroid
-                if (distance < min_distance) {
-                    min_distance = distance;
-                    nearest_cluster = &cluster;
-                }
-            }
-            // Add the vertex to the nearest cluster
-            if (nearest_cluster != nullptr) {
-                nearest_cluster->vertices.push_back(vertex);
-            }
-        }
-    }
-
-    return clusters;
-}*/
-
 
 double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
     path.clear();
@@ -901,7 +499,7 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
 
     // calculate total distance of the final path
     double totalDist = 0.0;
-    for (unsigned int i = 0; i < finalPath.size() - 1; ++i) {
+    for (unsigned int i = 0; i < finalPath.size() - 1; i++) {
         totalDist += findVertex(finalPath[i])->getEdge(findVertex(finalPath[i + 1]))->getWeight();
     }
 
@@ -952,8 +550,6 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
     if (auto edge = findVertex(current)->getEdge(findVertex(0))) {
         totalDist += edge->getWeight();
         finalPath.push_back(0);
-    } else {
-        std::cout << "Warning: No edge found returning to the start" << std::endl;
     }
 
     // return to the starting node 0
@@ -967,7 +563,7 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
 void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const {
     std::vector<std::pair<double, double>> centroids(k);
 
-    for (unsigned int i = 0; i < k; ++i) {
+    for (unsigned int i = 0; i < k; i++) {
         centroids[i].first = findVertex(i)->getInfo().getLat();
         centroids[i].second = findVertex(i)->getInfo().getLon();
     }
@@ -980,12 +576,12 @@ void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigne
         clusters.resize(k);
 
         // assign vertices to the nearest centroid
-        for (unsigned int i = 0; i < getNumVertex(); ++i) {
+        for (unsigned int i = 0; i < getNumVertex(); i++) {
             NetworkPoint point = findVertex(i)->getInfo();
             unsigned int bestCluster = 0;
             double bestDist = std::numeric_limits<double>::max();
 
-            for (unsigned int j = 0; j < k; ++j) {
+            for (unsigned int j = 0; j < k; j++) {
                 double dist = haversine(point.getLat(), point.getLon(), centroids[j].first,
                                         centroids[j].second);
                 if (dist < bestDist) {
@@ -997,7 +593,7 @@ void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigne
         }
 
         // update centroids
-        for (unsigned int j = 0; j < k; ++j) {
+        for (unsigned int j = 0; j < k; j++) {
             double lat = 0.0, lon = 0.0;
             for (unsigned int vertex: clusters[j]) {
                 NetworkPoint point = findVertex(vertex)->getInfo();
@@ -1034,7 +630,6 @@ double Graph::solveClusterTSP(const std::vector<unsigned int> &cluster, std::vec
 
     while (!unvisited.empty()) {
         unsigned int next = getNearestVertex(current, unvisited);
-        //std::cout << "Current: " << current << ", Next: " << next << std::endl;
 
         if (auto edge = findVertex(current)->getEdge(findVertex(next))) {
             totalDist += edge->getWeight();
@@ -1042,7 +637,6 @@ double Graph::solveClusterTSP(const std::vector<unsigned int> &cluster, std::vec
             unvisited.erase(current);
             clusterPath.push_back(current);
         } else {
-            std::cerr << "Warning: No edge found between vertices " << current << " and " << next << std::endl;
             unvisited.erase(current);
         }
     }
