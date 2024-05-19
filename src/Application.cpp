@@ -234,10 +234,17 @@ void Application::other() {
     double d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
 
     cout << endl << "Difference from the triangular: " << endl;
-    for (auto i = 0; i < g.size() - 1; i++)
-        cout << g.at(i).getId() << " -> ";
-    cout << g.at(g.size() - 1).getId();
     cout << " - Cost: " << heuristicDist - total << endl;
+    cout << " - Execution time: " << duration - d << endl;
+
+    vector<unsigned int> p;
+    s = clock();
+    double minDist = network_->tspBT(p);
+    e = clock();
+    d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
+
+    cout << endl << "Difference from the backtracking: " << endl;
+    cout << " - Cost: " << heuristicDist - minDist << endl;
     cout << " - Execution time: " << duration - d << endl;
 
     goBack();

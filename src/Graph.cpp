@@ -506,34 +506,6 @@ Graph Graph::computeMST(Vertex<NetworkPoint> *root) {
 }
 
 double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
-    std::unordered_set<unsigned int> visited;
-
-    unsigned int current = 0;
-    path.push_back(current);
-    visited.insert(current);
-    double totalDist = 0.0;
-
-    while (path.size() < vertexSet.size()) {
-        double minDist = std::numeric_limits<double>::max();
-        unsigned int next = 0;
-        for (const auto &edge: vertexSet.at(current)->getAdj()) {
-            auto neighbor = edge->getDest()->getInfo().getId();
-            if (visited.find(neighbor) == visited.end() && edge->getWeight() < minDist) {
-                minDist = edge->getWeight();
-                next = neighbor;
-            }
-        }
-        path.push_back(next);
-        visited.insert(next);
-        totalDist += minDist;
-        current = next;
-    }
-
-    totalDist += vertexSet.at(current)->getEdge(vertexSet.at(path[0]))->getWeight();
-    path.push_back(path[0]);
-
-    return totalDist;
-    /*
     path.clear();
     // nº de clusters
     unsigned int k = (int) round(std::sqrt(getNumVertex()));
@@ -566,7 +538,7 @@ double Graph::tspHeuristic(std::vector<unsigned int> &path) const {
         totalDist += findVertex(finalPath[i])->getEdge(findVertex(finalPath[i + 1]))->getWeight();
     }
 
-    return totalDist;*/
+    return totalDist;
 }
 
 void Graph::clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const {
