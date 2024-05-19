@@ -4,31 +4,9 @@
 #include <unordered_map>
 #include <cmath>
 
-
 #include "NetworkPoint.h"
 
 using namespace std;
-
-/*double convertToRadians(double degree) {
-    return degree * M_PI / 180.0;
-}
-
-double  haversine(double lat1, double lon1, double lat2, double lon2) {
-    double rad_lat1 = convertToRadians(lat1);
-    double rad_lon1 = convertToRadians(lon1);
-    double rad_lat2 = convertToRadians(lat2);
-    double rad_lon2 = convertToRadians(lon2);
-
-    double delta_lat = rad_lat2 - rad_lat1;
-    double delta_lon = rad_lon2 - rad_lon1;
-
-    double aux = pow(sin(delta_lat / 2.0), 2) + cos(rad_lat1) * cos(rad_lat2) * pow(sin(delta_lon / 2.0), 2);
-    double c = 2.0 * atan2(sqrt(aux), sqrt(1.0 - aux));
-
-    const double earthradius = 6371000.0; // in meters
-
-    return earthradius * c;
-}*/
 
 void Application::fullyConnectGraph() {
     for (const auto &p: network_->getVertexSet()) {
@@ -165,8 +143,7 @@ void Application::backtracking() {
 
     clock_t end = clock(); // terminar a contagem do tempo de execução
 
-    double duration =
-            static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
 
     cout << endl << "Backtracking Path:" << endl;
     for (auto i = 0; i < path.size() - 1; i++)
@@ -189,22 +166,20 @@ void Application::triangular() {
     if (needToConnect) fullyConnectGraph();
     cout << "Done! Continuing..." << endl;
 
-    clock_t start = clock(); // começar a contar o tempo de execução
+    clock_t start = clock();
 
     // calcular aproximação triangular
     auto g = network_->aproxTSP();
     double total = network_->calculateTriangular(g);
 
-    clock_t end = clock(); // terminar a contagem do tempo de execução
+    clock_t end = clock();
 
-    double duration =
-            static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000;
 
     cout << endl << "Triangular Path:" << endl;
-    for (auto i = 0; i < g.size() - 1; i++) {
+    for (auto i = 0; i < g.size() - 1; i++)
         cout << g.at(i).getId() << " -> ";
-    }
-    cout << g.at(0).getId();
+    cout << g.at(g.size() - 1).getId();
 
     cout << endl << "Total cost: " << total << endl;
     cout << "Execution time: " << duration << " milliseconds" << endl;
@@ -234,15 +209,15 @@ void Application::other() {
     if (needToConnect) fullyConnectGraph();
     cout << "Done! Continuing..." << endl;
 
-    clock_t start = clock(); // começar a contar o tempo de execução
+    clock_t start = clock();
 
     // calcular heurística
     vector<unsigned int> path;
     double heuristicDist = network_->tspHeuristic(path);
 
-    clock_t end = clock(); // terminar a contagem do tempo de execução
+    clock_t end = clock();
 
-    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000;
 
     cout << endl << "Heuristic Path:" << endl;
     for (auto i = 0; i < path.size() - 1; i++)
@@ -259,6 +234,9 @@ void Application::other() {
     double d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
 
     cout << endl << "Difference from the triangular: " << endl;
+    for (auto i = 0; i < g.size() - 1; i++)
+        cout << g.at(i).getId() << " -> ";
+    cout << g.at(g.size() - 1).getId();
     cout << " - Cost: " << heuristicDist - total << endl;
     cout << " - Execution time: " << duration - d << endl;
 
@@ -275,7 +253,38 @@ void Application::realWorld() {
     cout << "Enter the **origin** of the Travelling Salesperson Problem: ";
     cin >> origin;
 
-    // cout << "Path does not exist! << endl;
+    unsigned int id = stoul(origin);
+
+    auto originVertex = network_->findVertex(id);
+    if (!originVertex) {
+        cout << "Vertex does not exist!\n";
+        goBack();
+        return;
+    }
+
+    clock_t start = clock();
+
+    // calcular heurística
+    vector<unsigned int> path;
+    path.push_back(originVertex->getInfo().getId());
+    double total = network_->tspRealWorld(path);
+
+    clock_t end = clock();
+
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000;
+
+    if (total < 0) {
+        cout << "Path does not exist!" << endl;
+    } else {
+        cout << endl << "Real World Path:" << endl;
+        for (auto i = 0; i < path.size() - 1; i++)
+            cout << path[i] << " -> ";
+        cout << path[path.size() - 1];
+
+        cout << endl << "Total cost: " << total << endl;
+        cout << "Execution time: " << duration << " milliseconds" << endl;
+    }
+
     goBack();
 }
 

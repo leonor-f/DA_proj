@@ -102,13 +102,8 @@ public:
     int getNumVertex() const;
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> getVertexSet() const;
 
-    std:: vector<NetworkPoint> dfs() const;
-    std:: vector<NetworkPoint> dfs(const NetworkPoint & source) const;
     void dfsVisit(Vertex<NetworkPoint> *v,  std::vector<NetworkPoint> & res) const;
-    std::vector<NetworkPoint> bfs(const NetworkPoint & source) const;
-
-    bool isDAG() const;
-    bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
+    bool isConnected() const;
 
     double haversine(double lat1, double lon1, double lat2, double lon2) const;
 
@@ -156,8 +151,11 @@ public:
 
     void clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const;
 
+    double tspRealWorld(std::vector<unsigned int> &path) const;
+
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set
+
 };
 
 

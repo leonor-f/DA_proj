@@ -1,0 +1,126 @@
+@startuml
+' Define templates
+!define T class T
+
+' Classes
+class Graph {
+    ~Graph()
+    +findVertex(NetworkPoint &in) : Vertex<NetworkPoint> *
+    +addVertex(const NetworkPoint &in) : bool
+    +removeVertex(const NetworkPoint &in) : bool
+    +addEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w) : bool
+    +removeEdge(const NetworkPoint &source, const NetworkPoint &dest) : bool
+    +addBidirectionalEdge(const NetworkPoint &sourc, const NetworkPoint &dest, double w) : bool
+    +getNumVertex() : int
+    +getVertexSet() : unordered_map<unsigned, Vertex<NetworkPoint> *>
+    +dfsVisit(Vertex<NetworkPoint> *v, std::vector<NetworkPoint> &res) : void
+    +isConnected() : bool
+    +haversine(double lat1, double lon1, double lat2, double lon2) : double
+    +aproxTSP() : vector<NetworkPoint>
+    +computeMST(Vertex<NetworkPoint> *root) : Graph
+    +calculateTriangular(vector<NetworkPoint> g) : double
+    +getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) : double
+    +tspBTRec(unsigned int curIndex, double curDist, vector<unsigned int> &curPath, double &minDist, vector<unsigned int> &path) : void
+    +tspBT(vector<unsigned int> &path) : double
+    +tspHeuristic(vector<unsigned int> &path) : double
+    +getNearestVertex(unsigned int from, const unordered_set<unsigned int> &candidates) : unsigned int
+    +solveClusterTSP(const vector<unsigned int> &cluster, vector<unsigned int> &clusterPath) : double
+    +clustering(vector<vector<unsigned int>> &clusters, unsigned int k) : void
+    +tspRealWorld(vector<unsigned int> &path) : double
+    protected
+    -unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet
+}
+
+class NetworkPoint {
+    -unsigned id_
+    -double lat_
+    -double lon_
+    +NetworkPoint(unsigned id)
+    +NetworkPoint(unsigned int id, double lat, double lon)
+    +getId() : unsigned
+    +getLat() : double
+    +getLon() : double
+    +operator==(const NetworkPoint &other) : bool
+}
+
+class FileReader {
+    -ifstream file_
+    -vector<vector<string>> data_
+    -bool ignoreFirstLine
+    +FileReader()
+    +getData() : vector<vector<string>>
+    +setFile(string file, bool ignore) : bool
+    +getCoordinates(unsigned id) : pair<double, double>
+}
+
+class Application {
+    -Graph *network_
+    -FileReader file
+    -FileReader nodes
+    -void fullyConnectGraph()
+    -bool needToConnect
+    +Application()
+    +menu() : void
+    +loadData() : void
+    +backtracking() : void
+    +triangular() : void
+    +other() : void
+    +realWorld() : void
+    +goBack() : void
+    +loadToyGraph() : void
+    +loadMediumGraph() : void
+    +loadRealGraph() : void
+    +isFileRead : bool
+}
+
+class Vertex<T> {
+    +Vertex(T in)
+    +getInfo() const : T
+    +getAdj() const : vector<Edge<T> *>
+    +isVisited() const : bool
+    +getDist() const : double
+    +getPath() const : Edge<T> *
+    +getIncoming() const : vector<Edge<T> *>
+    +setInfo(T info) : void
+    +setVisited(bool visited) : void
+    +setDist(double dist) : void
+    +setPath(Edge<T> *path) : void
+    +addEdge(Vertex<T> *dest, double w) : Edge<T> *
+    +removeEdge(T in) : bool
+    +removeOutgoingEdges() : void
+    +getEdge(const Vertex<T> *dest) const : const Edge<T> *
+    protected
+    -T info
+    -vector<Edge<T> *> adj
+    -bool visited
+    -double dist
+    -Edge<T> *path
+    -vector<Edge<T> *> incoming
+    -deleteEdge(Edge<T> *edge) : void
+}
+
+class Edge<T> {
+    +Edge(Vertex<T> *orig, Vertex<T> *dest, double w)
+    +getDest() const : Vertex<T> *
+    +getWeight() const : double
+    +getOrig() const : Vertex<T> *
+    +getReverse() const : Edge<T> *
+    +setReverse(Edge<T> *reverse) : void
+    protected
+    -Vertex<T> *dest
+    -double weight
+    -Vertex<T> *orig
+    -Edge<T> *reverse
+}
+
+' Relationships
+Graph -> "1..*" Vertex
+Vertex --> "1..*" Edge
+Vertex *- NetworkPoint
+Edge --> "1" Vertex : orig
+Edge --> "1" Vertex : dest
+Application -> "1" Graph
+Application --> "1" FileReader : file
+Application --> "1" FileReader : nodes
+
+@enduml
