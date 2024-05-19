@@ -1,0 +1,212 @@
+\hypertarget{classGraph}{}\doxysection{Graph Class Reference}
+\label{classGraph}\index{Graph@{Graph}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classGraph_a28b997d5f76dfc9f9f859dfb56db71c6}\label{classGraph_a28b997d5f76dfc9f9f859dfb56db71c6}} 
+\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$ {\bfseries find\+Vertex} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&in) const
+\item 
+\mbox{\Hypertarget{classGraph_a4ec2571dbe14ba5aed58bbc3d201fe8f}\label{classGraph_a4ec2571dbe14ba5aed58bbc3d201fe8f}} 
+bool {\bfseries add\+Vertex} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&in)
+\item 
+\mbox{\Hypertarget{classGraph_a1363d4450cae7cbf7ecbd5b6fe802b67}\label{classGraph_a1363d4450cae7cbf7ecbd5b6fe802b67}} 
+bool {\bfseries remove\+Vertex} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&in)
+\item 
+\mbox{\Hypertarget{classGraph_a5c9f770dc363a54670ac0ea27697aaf4}\label{classGraph_a5c9f770dc363a54670ac0ea27697aaf4}} 
+bool {\bfseries add\+Edge} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&sourc, const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&dest, double w)
+\item 
+\mbox{\Hypertarget{classGraph_a692346652509f8cb2555f838b4acbeda}\label{classGraph_a692346652509f8cb2555f838b4acbeda}} 
+bool {\bfseries remove\+Edge} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&source, const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&dest)
+\item 
+\mbox{\Hypertarget{classGraph_abf0de049ff043cd9d591a6be5952ee9e}\label{classGraph_abf0de049ff043cd9d591a6be5952ee9e}} 
+bool {\bfseries add\+Bidirectional\+Edge} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&sourc, const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&dest, double w)
+\item 
+\mbox{\Hypertarget{classGraph_abb5e0517e2979c54eebdafc2a9875e8f}\label{classGraph_abb5e0517e2979c54eebdafc2a9875e8f}} 
+int {\bfseries get\+Num\+Vertex} () const
+\item 
+\mbox{\Hypertarget{classGraph_adb6a0f6c89527075ce99ee3d36d7da10}\label{classGraph_adb6a0f6c89527075ce99ee3d36d7da10}} 
+std\+::unordered\+\_\+map$<$ unsigned, \mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$ $>$ {\bfseries get\+Vertex\+Set} () const
+\item 
+\mbox{\Hypertarget{classGraph_a8041e537125f97a9a452b6ab79b48961}\label{classGraph_a8041e537125f97a9a452b6ab79b48961}} 
+std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries dfs} () const
+\item 
+\mbox{\Hypertarget{classGraph_a8cfa1fd13a6d2145401f08343d7f8c60}\label{classGraph_a8cfa1fd13a6d2145401f08343d7f8c60}} 
+std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries dfs} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&source) const
+\item 
+\mbox{\Hypertarget{classGraph_a45d6d9c586e9bf2a8278c3e534a18eb3}\label{classGraph_a45d6d9c586e9bf2a8278c3e534a18eb3}} 
+void {\bfseries dfs\+Visit} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$v, std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ \&res) const
+\item 
+\mbox{\Hypertarget{classGraph_ab1fdec6d3d0487dfd82a5168e6a2b174}\label{classGraph_ab1fdec6d3d0487dfd82a5168e6a2b174}} 
+std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries bfs} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&source) const
+\item 
+\mbox{\Hypertarget{classGraph_a4c636eb91a3e8e51c4fdc02734bbed79}\label{classGraph_a4c636eb91a3e8e51c4fdc02734bbed79}} 
+bool {\bfseries is\+DAG} () const
+\item 
+\mbox{\Hypertarget{classGraph_aae6ddf45c8cb0ef145e9e759fbee0f52}\label{classGraph_aae6ddf45c8cb0ef145e9e759fbee0f52}} 
+bool {\bfseries dfs\+Is\+DAG} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$v) const
+\item 
+\mbox{\Hypertarget{classGraph_a8772e80e7715910f0622b57c62015ce4}\label{classGraph_a8772e80e7715910f0622b57c62015ce4}} 
+double {\bfseries haversine} (double lat1, double lon1, double lat2, double lon2) const
+\item 
+\mbox{\Hypertarget{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}\label{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}} 
+std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries aprox\+TSP} ()
+\item 
+\mbox{\Hypertarget{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}\label{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}} 
+\mbox{\hyperlink{classGraph}{Graph}} {\bfseries compute\+MST} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$root)
+\item 
+\mbox{\Hypertarget{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}\label{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}} 
+double {\bfseries calculate\+Triangular} (std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ g)
+\item 
+\mbox{\Hypertarget{classGraph_ac64024f07403fc18261b3d6c30a6cb25}\label{classGraph_ac64024f07403fc18261b3d6c30a6cb25}} 
+double {\bfseries get\+Edge\+Weight} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&a, const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&b) const
+\item 
+void \mbox{\hyperlink{classGraph_a34a15ba924c601f35b18fe8335437aae}{tsp\+BTRec}} (unsigned int cur\+Index, double cur\+Dist, std\+::vector$<$ unsigned int $>$ \&cur\+Path, double \&min\+Dist, std\+::vector$<$ unsigned int $>$ \&path) const
+\begin{DoxyCompactList}\small\item\em Recursive helper function for solving the Traveling Salesman Problem using backtracking. Complexity\+: O(V!) \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_a8a5129f6a2b6eb2f7ceadf6125af6cd3}{tsp\+BT}} (std\+::vector$<$ unsigned int $>$ \&path) const
+\begin{DoxyCompactList}\small\item\em Solves the Traveling Salesman Problem using backtracking. Complexity\+: O(V!) \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_aff1956ec0183c9d9c7871b15b91bd1db}{tsp\+Heuristic}} (std\+::vector$<$ unsigned int $>$ \&path) const
+\begin{DoxyCompactList}\small\item\em Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the graph. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}{get\+Nearest\+Vertex}} (unsigned int from, const std\+::unordered\+\_\+set$<$ unsigned int $>$ \&candidates) const
+\begin{DoxyCompactList}\small\item\em Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(\+C), where C is the number of candidates. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}{solve\+Cluster\+TSP}} (const std\+::vector$<$ unsigned int $>$ \&cluster, std\+::vector$<$ unsigned int $>$ \&cluster\+Path) const
+\begin{DoxyCompactList}\small\item\em Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the cluster. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_a905a6e1157a4e0cf21160bf684a71437}{clustering}} (std\+::vector$<$ std\+::vector$<$ unsigned int $>$$>$ \&clusters, unsigned int k) const
+\begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on the vertices of the graph. Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classGraph_a89b06e56d06a27d283ed10bc7932d1a6}\label{classGraph_a89b06e56d06a27d283ed10bc7932d1a6}} 
+std\+::unordered\+\_\+map$<$ unsigned, \mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$ $>$ {\bfseries vertex\+Set}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classGraph_a905a6e1157a4e0cf21160bf684a71437}\label{classGraph_a905a6e1157a4e0cf21160bf684a71437}} 
+\index{Graph@{Graph}!clustering@{clustering}}
+\index{clustering@{clustering}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{clustering()}{clustering()}}
+{\footnotesize\ttfamily void Graph\+::clustering (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ unsigned int $>$$>$ \&}]{clusters,  }\item[{unsigned int}]{k }\end{DoxyParamCaption}) const}
+
+
+
+Perform k-\/means clustering on the vertices of the graph. Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em clusters} & A reference to a vector of vectors of unsigned integers. \\
+\hline
+{\em k} & The number of clusters to create. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}\label{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}} 
+\index{Graph@{Graph}!getNearestVertex@{getNearestVertex}}
+\index{getNearestVertex@{getNearestVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getNearestVertex()}{getNearestVertex()}}
+{\footnotesize\ttfamily unsigned int Graph\+::get\+Nearest\+Vertex (\begin{DoxyParamCaption}\item[{unsigned int}]{from,  }\item[{const std\+::unordered\+\_\+set$<$ unsigned int $>$ \&}]{candidates }\end{DoxyParamCaption}) const}
+
+
+
+Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(\+C), where C is the number of candidates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em from} & The index of the vertex from which distances are measured. \\
+\hline
+{\em candidates} & A reference to an unordered set of unsigned integers representing the indices of candidate vertices. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The index of the nearest vertex from the specified vertex. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}\label{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}} 
+\index{Graph@{Graph}!solveClusterTSP@{solveClusterTSP}}
+\index{solveClusterTSP@{solveClusterTSP}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{solveClusterTSP()}{solveClusterTSP()}}
+{\footnotesize\ttfamily double Graph\+::solve\+Cluster\+TSP (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ unsigned int $>$ \&}]{cluster,  }\item[{std\+::vector$<$ unsigned int $>$ \&}]{cluster\+Path }\end{DoxyParamCaption}) const}
+
+
+
+Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the cluster. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cluster} & A reference to a vector of unsigned integers representing the indices of vertices in the cluster. \\
+\hline
+{\em cluster\+Path} & A reference to a vector of unsigned integers to store the tour path within the cluster. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total distance of the tour within the cluster. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a8a5129f6a2b6eb2f7ceadf6125af6cd3}\label{classGraph_a8a5129f6a2b6eb2f7ceadf6125af6cd3}} 
+\index{Graph@{Graph}!tspBT@{tspBT}}
+\index{tspBT@{tspBT}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{tspBT()}{tspBT()}}
+{\footnotesize\ttfamily double Graph\+::tsp\+BT (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned int $>$ \&}]{path }\end{DoxyParamCaption}) const}
+
+
+
+Solves the Traveling Salesman Problem using backtracking. Complexity\+: O(V!) 
+
+This function initializes the necessary variables and calls the recursive helper function {\ttfamily tsp\+BTRec} to compute the shortest possible route that visits each vertex exactly once and returns to the starting point. It returns the minimum distance of such a path and stores the corresponding path in the provided vector.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Reference to a vector where the path of the minimum distance will be stored. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The minimum distance of the Traveling Salesman Problem solution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a34a15ba924c601f35b18fe8335437aae}\label{classGraph_a34a15ba924c601f35b18fe8335437aae}} 
+\index{Graph@{Graph}!tspBTRec@{tspBTRec}}
+\index{tspBTRec@{tspBTRec}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{tspBTRec()}{tspBTRec()}}
+{\footnotesize\ttfamily void Graph\+::tsp\+BTRec (\begin{DoxyParamCaption}\item[{unsigned int}]{cur\+Index,  }\item[{double}]{cur\+Dist,  }\item[{std\+::vector$<$ unsigned int $>$ \&}]{cur\+Path,  }\item[{double \&}]{min\+Dist,  }\item[{std\+::vector$<$ unsigned int $>$ \&}]{path }\end{DoxyParamCaption}) const}
+
+
+
+Recursive helper function for solving the Traveling Salesman Problem using backtracking. Complexity\+: O(V!) 
+
+This function attempts to find the shortest path that visits all vertices in the graph exactly once and returns to the starting vertex. It explores all possible paths using backtracking and updates the minimum distance and corresponding path whenever a shorter path is found.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cur\+Index} & The current index in the path being constructed. \\
+\hline
+{\em cur\+Dist} & The current total distance of the path being constructed. \\
+\hline
+{\em cur\+Path} & The current path being constructed. \\
+\hline
+{\em min\+Dist} & Reference to the minimum distance found so far. \\
+\hline
+{\em path} & Reference to the path corresponding to the minimum distance found so far. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classGraph_aff1956ec0183c9d9c7871b15b91bd1db}\label{classGraph_aff1956ec0183c9d9c7871b15b91bd1db}} 
+\index{Graph@{Graph}!tspHeuristic@{tspHeuristic}}
+\index{tspHeuristic@{tspHeuristic}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{tspHeuristic()}{tspHeuristic()}}
+{\footnotesize\ttfamily double Graph\+::tsp\+Heuristic (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned int $>$ \&}]{path }\end{DoxyParamCaption}) const}
+
+
+
+Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & A reference to a vector of unsigned integers to store the resulting TSP path. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total distance of the TSP tour. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Graph.\+h\item 
+Graph.\+cpp\end{DoxyCompactItemize}
