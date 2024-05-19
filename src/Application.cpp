@@ -185,7 +185,7 @@ void Application::triangular() {
         loadData();
     }
 
-    cout << endl << "Fully connecting graph..." << endl;
+    cout << endl << "Checking if graph is fully connected..." << endl;
     if (needToConnect) fullyConnectGraph();
     cout << "Done! Continuing..." << endl;
 
@@ -211,8 +211,14 @@ void Application::triangular() {
 
     if (!needToConnect) {
         vector<unsigned int> path;
+        clock_t s = clock();
         double minDist = network_->tspBT(path);
-        cout << "Difference from the backtracking: " << total - minDist << endl;
+        clock_t e = clock();
+        double d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
+
+        cout << endl << "Difference from the backtracking: " << endl;
+        cout << " - Cost: " << total - minDist << endl;
+        cout << " - Execution time: " << duration - d << endl;
     }
 
     goBack();
@@ -224,7 +230,7 @@ void Application::other() {
         loadData();
     }
 
-    cout << endl << "Fully connecting graph..." << endl;
+    cout << endl << "Checking if graph is fully connected..." << endl;
     if (needToConnect) fullyConnectGraph();
     cout << "Done! Continuing..." << endl;
 
@@ -246,11 +252,15 @@ void Application::other() {
     cout << endl << "Total cost: " << heuristicDist << endl;
     cout << "Execution time: " << duration << " milliseconds" << endl;
 
-    if (needToConnect) {
-        auto g = network_->aproxTSP();
-        double total = network_->calculateTriangular(g);
-        cout << "Difference from the triangular: " << heuristicDist - total << endl;
-    }
+    clock_t s = clock();
+    auto g = network_->aproxTSP();
+    double total = network_->calculateTriangular(g);
+    clock_t e = clock();
+    double d = static_cast<double>(e - s) / CLOCKS_PER_SEC * 1000;
+
+    cout << endl << "Difference from the triangular: " << endl;
+    cout << " - Cost: " << heuristicDist - total << endl;
+    cout << " - Execution time: " << duration - d << endl;
 
     goBack();
 }
