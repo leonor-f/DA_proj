@@ -110,10 +110,42 @@ public:
     bool isDAG() const;
     bool dfsIsDAG(Vertex<NetworkPoint> *v) const;
 
+    /**
+     * @brief Calculates the Haversine distance between two points specified by latitude and longitude.
+     *
+     * @param lat1 Latitude of the first point in degrees.
+     * @param lon1 Longitude of the first point in degrees.
+     * @param lat2 Latitude of the second point in degrees.
+     * @param lon2 Longitude of the second point in degrees.
+     * @return The Haversine distance between the two points in meters.
+     * @complexity O(1)
+     */
     double haversine(double lat1, double lon1, double lat2, double lon2) const;
 
+    /**
+     * @brief Computes an approximate solution to the TSP using MST and preorder traversal.
+     *
+     * @return A vector of NetworkPoint objects representing the approximate TSP tour.
+     * @complexity O(V + E), where V is the number of vertices and E is the number of edges.
+     */
     std::vector<NetworkPoint> aproxTSP();
+
+    /**
+     * @brief Computes the Minimum Spanning Tree of the graph starting from a given root vertex using Prim's algorithm.
+     *
+     * @param root A pointer to the root vertex from which to start the MST computation.
+     * @return A Graph representing the MST.
+     * @complexity O((V + E) log V), where V is the number of vertices and E is the number of edges.
+     */
     Graph computeMST(Vertex<NetworkPoint> *root);
+
+    /**
+     * @brief Calculates the total weight of a triangular tour through the given points.
+     *
+     * @param g A vector of NetworkPoint objects representing the points in the tour.
+     * @return The total weight of the triangular tour.
+     * @complexity O(N), where N is the number of points in the vector.
+     */
     double calculateTriangular(std::vector<NetworkPoint> g);
 
     double getEdgeWeight(const NetworkPoint &a, const NetworkPoint &b) const;
