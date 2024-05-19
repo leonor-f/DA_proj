@@ -136,6 +136,9 @@ public:
      * @return A pointer to the new graph.
      */
     Graph * copyGraph();
+
+    double haversine(double lat1, double lon1, double lat2, double lon2) const;
+
     std::vector<NetworkPoint> aproxTSP();
     Graph computeMST(Vertex<NetworkPoint> *root);
 
@@ -170,6 +173,14 @@ public:
      * @complexity O(V!)
      */
     double tspBT(std::vector<unsigned int> &path) const;
+
+    double tspHeuristic(std::vector<unsigned int> &path) const;
+
+    unsigned int getNearestVertex(unsigned int from, const std::unordered_set<unsigned int> &candidates) const;
+
+    double solveClusterTSP(const std::vector<unsigned int> &cluster, std::vector<unsigned int> &clusterPath) const;
+
+    void clustering(std::vector<std::vector<unsigned int>> &clusters, unsigned int k) const;
 
 protected:
     std::unordered_map<unsigned, Vertex<NetworkPoint> *> vertexSet;    // vertex set

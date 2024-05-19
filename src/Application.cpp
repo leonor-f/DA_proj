@@ -4,15 +4,16 @@
 #include <unordered_map>
 #include <cmath>
 
+
 #include "NetworkPoint.h"
 
 using namespace std;
 
-double convertToRadians(double degree) {
+/*double convertToRadians(double degree) {
     return degree * M_PI / 180.0;
 }
 
-double haversine(double lat1, double lon1, double lat2, double lon2) {
+double  haversine(double lat1, double lon1, double lat2, double lon2) {
     double rad_lat1 = convertToRadians(lat1);
     double rad_lon1 = convertToRadians(lon1);
     double rad_lat2 = convertToRadians(lat2);
@@ -27,7 +28,7 @@ double haversine(double lat1, double lon1, double lat2, double lon2) {
     const double earthradius = 6371000.0; // in meters
 
     return earthradius * c;
-}
+}*/
 
 void Application::fullyConnectGraph() {
     for (const auto &p: network_->getVertexSet()) {
@@ -50,8 +51,8 @@ void Application::fullyConnectGraph() {
                 // Calculate distance between point1 and point2
                 auto point1Coords = nodes.getCoordinates(point1.getId());
                 auto point2Coords = nodes.getCoordinates(point2.getId());
-                double distance = haversine(point1Coords.first, point1Coords.second, point2Coords.first,
-                                            point2Coords.second);
+                double distance = network_->haversine(point1Coords.second, point1Coords.first, point2Coords.second,
+                                            point2Coords.first);
 
                 // Add edge between point1 and point2
                 network_->addEdge(point1, point2, distance);
@@ -99,9 +100,7 @@ void Application::menu() {
                 other();
                 break;
             case 5:
-                cout << "Enter the **origin** of the Travelling Salesperson Problem: ";
-                cin >> sel;
-                realWorld(sel);
+                realWorld();
                 break;
             case 0:
                 cout << "Exiting program. Goodbye!" << endl;
@@ -145,7 +144,7 @@ void Application::loadData() {
                 break;
             case 0:
                 menu();
-                //break;
+                break;
             default:
                 cout << "Invalid choice. Please try again." << endl;
         }
@@ -169,9 +168,11 @@ void Application::backtracking() {
     double duration =
             static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
 
-    cout << "Path:" << endl;
-    for (unsigned int p: path)
-        cout << " -> " << p;
+    cout << endl << "Path:" << endl;
+    for (auto i = 0; i < path.size() - 1; i++)
+        cout << path[i] << " -> ";
+    cout << path[path.size() - 1];
+
     cout << endl << "Minimum cost: " << minDist << endl;
     cout << "Execution time: " << duration << " milliseconds" << endl;
 
@@ -190,44 +191,67 @@ void Application::triangular() {
 
     double total = 0.0;
 
-    for (size_t i = 0; i < g.size() - 1; ++i) {
+    for (size_t i = 0; i < g.size() - 1; i++) {
         cout << "From " << g.at(i).getId() << " to " << g.at(i + 1).getId() << " with weight of "
              << network_->getEdgeWeight(g.at(i), g.at(i + 1)) << endl;
         total += network_->getEdgeWeight(g.at(i), g.at(i + 1));
     }
 
-    cout << "The total weight of this is " << total << endl;
-
-    int choice;
-    do {
-        cout << "Press 0 to go back...";
-        cin >> choice;
-    } while (choice != 0);
+    cout << "Total weight: " << total << endl;
 
     //do not forget to compare with backtracking for the small graphs
     goBack();
 }
+
 
 void Application::other() {
     if (!isFileRead) {
         cout << "\nPlease select a graph to read:\n";
         loadData();
     }
+
+    clock_t start = clock();
+
+    // calcular heurística
+    vector<unsigned int> path;
+    double heuristicDist = network_->tspHeuristic(path);
+
+    clock_t end = clock();
+    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000; // milisegundos
+
+    cout << endl << "Heuristic Path:" << endl;
+    for (auto i = 0; i < path.size() - 1; i++)
+        cout << path[i] << " -> ";
+    cout << path[path.size() - 1];
+
+    cout << endl << "Total cost: " << heuristicDist << endl;
+    cout << "Execution time: " << duration << " milliseconds" << endl;
+
     goBack();
 }
 
-void Application::realWorld(string c) {
+void Application::realWorld() {
     if (!isFileRead) {
         cout << "\nPlease select a graph to read:\n";
         loadData();
     }
+
+    string origin;
+    cout << "Enter the **origin** of the Travelling Salesperson Problem: ";
+    cin >> origin;
+
     // cout << "Path does not exist! << endl;
     goBack();
 }
 
 void Application::goBack() {
-    cout << endl << "---------------------------" << endl << "Press ENTER to go back." << endl
-         << "---------------------------" << endl;
+    int choice;
+    do {
+        cout << endl << "+--------------------+" << endl << "| Press 0 to go back |" << endl
+             << "+--------------------+" << endl;
+        cin >> choice;
+    } while (choice != 0);
+
     menu();
 }
 
@@ -296,6 +320,9 @@ void Application::loadToyGraph() {
                     isFileRead = true;
                     menu();
                     break;
+                case 0:
+                    menu();
+                    break;
                 default:
                     cout << "Invalid choice. Please try again." << endl;
             }
@@ -309,7 +336,7 @@ void Application::loadMediumGraph() {
         vector<vector<string>> data;
         needToConnect = true;
         cout << endl;
-        cout << "\nEnter the number of edges:";
+        cout << "Enter the number of edges {25,50,75,100,200,300,400,500,600,700,800,900}:";
         cin >> choice;
 
         if (!file.setFile("../../dataset/Extra_Fully_Connected_Graphs/edges_" + to_string(choice) + ".csv", false)) {
@@ -320,8 +347,10 @@ void Application::loadMediumGraph() {
         data = file.getData();
 
         for (const auto &line: data) {
-            NetworkPoint source(std::stoi(line.at(0)));
-            NetworkPoint dest(std::stoi(line.at(1)));
+            NetworkPoint source(std::stoi(line.at(0)), nodes.getCoordinates(stoi(line.at(0))).second,
+                                nodes.getCoordinates(stoi(line.at(0))).first);
+            NetworkPoint dest(std::stoi(line.at(1)), nodes.getCoordinates(stoi(line.at(0))).second,
+                              nodes.getCoordinates(stoi(line.at(0))).first);
             network_->addVertex(source);
             network_->addVertex(dest);
             network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
@@ -338,7 +367,7 @@ void Application::loadRealGraph() {
         vector<vector<string>> data;
         needToConnect = true;
         cout << endl;
-        cout << "\n Select the graph:";
+        cout << "Select the graph {1,2,3}:";
         cin >> choice;
         if (!file.setFile("../../dataset/Real-world-Graphs/graph" + to_string(choice) + "/edges.csv", true)) {
             cout << "File does not exist.\n";
@@ -350,11 +379,13 @@ void Application::loadRealGraph() {
         data = file.getData();
 
         for (const auto &line: data) {
-            NetworkPoint source(std::stoi(line.at(0)));
-            NetworkPoint dest(std::stoi(line.at(1)));
+            NetworkPoint source(stoi(line.at(0)), nodes.getCoordinates(stoi(line.at(0))).second,
+                                nodes.getCoordinates(stoi(line.at(0))).first);
+            NetworkPoint dest(stoi(line.at(1)), nodes.getCoordinates(stoi(line.at(0))).second,
+                              nodes.getCoordinates(stoi(line.at(0))).first);
             network_->addVertex(source);
             network_->addVertex(dest);
-            network_->addBidirectionalEdge(source, dest, std::stod(line.at(2)));
+            network_->addBidirectionalEdge(source, dest, stod(line.at(2)));
         }
         isFileRead = true;
         menu();

@@ -53,8 +53,8 @@ std::pair<double, double> FileReader::getCoordinates(unsigned id) {
                 v.push_back(value);
             }
 
-            res.first = std::stod(v.at(1));
-            res.second = std::stod(v.at(2));
+            res.first = std::stod(v.at(1)); // longitude
+            res.second = std::stod(v.at(2)); // latitude
 
             return res;
         }

@@ -21,7 +21,7 @@ public:
     void backtracking();
     void triangular();
     void other();
-    void realWorld(std::string c);
+    void realWorld();
     void goBack();
     void loadToyGraph();
     void loadMediumGraph();
