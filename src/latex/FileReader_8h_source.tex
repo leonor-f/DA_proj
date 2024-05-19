@@ -1,0 +1,30 @@
+\hypertarget{FileReader_8h_source}{}\doxysection{File\+Reader.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef PROJ2\_FILEREADER\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define PROJ2\_FILEREADER\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{13 \textcolor{keyword}{class }\mbox{\hyperlink{classFileReader}{FileReader}} \{}
+\DoxyCodeLine{14     std::ifstream file\_; }
+\DoxyCodeLine{15     std::vector<std::vector<std::string>> data\_; }
+\DoxyCodeLine{16     \textcolor{keywordtype}{bool} ignoreFirstLine;}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{public}:}
+\DoxyCodeLine{23     \mbox{\hyperlink{classFileReader_a615dcb2443cad1f2ca123c7c0c334480}{FileReader}}();}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{29     std::vector<std::vector<std::string>> \mbox{\hyperlink{classFileReader_a5c7f0cf3adfe067e66d787444bdbcf32}{getData}}();}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keywordtype}{bool} setFile(std::string file, \textcolor{keywordtype}{bool} ignore);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33     std::pair<double, double> getCoordinates(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{id});}
+\DoxyCodeLine{34 \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//PROJ2\_FILEREADER\_H}}
+
+\end{DoxyCode}

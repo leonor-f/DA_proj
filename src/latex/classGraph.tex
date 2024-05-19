@@ -27,36 +27,20 @@ int {\bfseries get\+Num\+Vertex} () const
 \mbox{\Hypertarget{classGraph_adb6a0f6c89527075ce99ee3d36d7da10}\label{classGraph_adb6a0f6c89527075ce99ee3d36d7da10}} 
 std\+::unordered\+\_\+map$<$ unsigned, \mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$ $>$ {\bfseries get\+Vertex\+Set} () const
 \item 
-\mbox{\Hypertarget{classGraph_a8041e537125f97a9a452b6ab79b48961}\label{classGraph_a8041e537125f97a9a452b6ab79b48961}} 
-std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries dfs} () const
-\item 
-\mbox{\Hypertarget{classGraph_a8cfa1fd13a6d2145401f08343d7f8c60}\label{classGraph_a8cfa1fd13a6d2145401f08343d7f8c60}} 
-std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries dfs} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&source) const
-\item 
 \mbox{\Hypertarget{classGraph_a45d6d9c586e9bf2a8278c3e534a18eb3}\label{classGraph_a45d6d9c586e9bf2a8278c3e534a18eb3}} 
 void {\bfseries dfs\+Visit} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$v, std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ \&res) const
 \item 
-\mbox{\Hypertarget{classGraph_ab1fdec6d3d0487dfd82a5168e6a2b174}\label{classGraph_ab1fdec6d3d0487dfd82a5168e6a2b174}} 
-std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries bfs} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&source) const
+\mbox{\Hypertarget{classGraph_aded2431bddc4c277db7ac08da4486179}\label{classGraph_aded2431bddc4c277db7ac08da4486179}} 
+bool {\bfseries is\+Connected} () const
 \item 
-\mbox{\Hypertarget{classGraph_a4c636eb91a3e8e51c4fdc02734bbed79}\label{classGraph_a4c636eb91a3e8e51c4fdc02734bbed79}} 
-bool {\bfseries is\+DAG} () const
-\item 
-\mbox{\Hypertarget{classGraph_aae6ddf45c8cb0ef145e9e759fbee0f52}\label{classGraph_aae6ddf45c8cb0ef145e9e759fbee0f52}} 
-bool {\bfseries dfs\+Is\+DAG} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$v) const
-\item 
-\mbox{\Hypertarget{classGraph_a8772e80e7715910f0622b57c62015ce4}\label{classGraph_a8772e80e7715910f0622b57c62015ce4}} 
-double {\bfseries haversine} (double lat1, double lon1, double lat2, double lon2) const
-\item 
-\mbox{\Hypertarget{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}\label{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}} 
-std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ {\bfseries aprox\+TSP} ()
-\item 
-\mbox{\Hypertarget{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}\label{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}} 
-\mbox{\hyperlink{classGraph}{Graph}} {\bfseries compute\+MST} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$root)
-\item 
-\mbox{\Hypertarget{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}\label{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}} 
-double {\bfseries calculate\+Triangular} (std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ g)
-\item 
+double \mbox{\hyperlink{classGraph_a8772e80e7715910f0622b57c62015ce4}{haversine}} (double lat1, double lon1, double lat2, double lon2) const
+\begin{DoxyCompactList}\small\item\em Calculates the Haversine distance between two points specified by latitude and longitude. Complexity O(1) \end{DoxyCompactList}\item 
+std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ \mbox{\hyperlink{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}{aprox\+TSP}} ()
+\begin{DoxyCompactList}\small\item\em Computes an approximate solution to the TSP using MST and preorder traversal. Complexity O(V + E), where V is the number of vertices and E is the number of edges. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classGraph}{Graph}} \mbox{\hyperlink{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}{compute\+MST}} (\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$root)
+\begin{DoxyCompactList}\small\item\em Computes the Minimum Spanning Tree of the graph starting from a given root vertex using Prim\textquotesingle{}s algorithm. Complexity O((V + E) log V), where V is the number of vertices and E is the number of edges. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}{calculate\+Triangular}} (std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ g)
+\begin{DoxyCompactList}\small\item\em Calculates the total weight of a triangular tour through the given points. Complexity O(n), where n is the number of points in the vector. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{classGraph_ac64024f07403fc18261b3d6c30a6cb25}\label{classGraph_ac64024f07403fc18261b3d6c30a6cb25}} 
 double {\bfseries get\+Edge\+Weight} (const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&a, const \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} \&b) const
 \item 
@@ -65,13 +49,15 @@ void \mbox{\hyperlink{classGraph_a34a15ba924c601f35b18fe8335437aae}{tsp\+BTRec}}
 double \mbox{\hyperlink{classGraph_a8a5129f6a2b6eb2f7ceadf6125af6cd3}{tsp\+BT}} (std\+::vector$<$ unsigned int $>$ \&path) const
 \begin{DoxyCompactList}\small\item\em Solves the Traveling Salesman Problem using backtracking. Complexity\+: O(V!) \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classGraph_aff1956ec0183c9d9c7871b15b91bd1db}{tsp\+Heuristic}} (std\+::vector$<$ unsigned int $>$ \&path) const
-\begin{DoxyCompactList}\small\item\em Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the graph. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+V$^\wedge$2), where V is the number of vertices in the graph. \end{DoxyCompactList}\item 
 unsigned int \mbox{\hyperlink{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}{get\+Nearest\+Vertex}} (unsigned int from, const std\+::unordered\+\_\+set$<$ unsigned int $>$ \&candidates) const
-\begin{DoxyCompactList}\small\item\em Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(\+C), where C is the number of candidates. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(n), where n is the number of candidates. \end{DoxyCompactList}\item 
 double \mbox{\hyperlink{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}{solve\+Cluster\+TSP}} (const std\+::vector$<$ unsigned int $>$ \&cluster, std\+::vector$<$ unsigned int $>$ \&cluster\+Path) const
-\begin{DoxyCompactList}\small\item\em Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the cluster. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{classGraph_a905a6e1157a4e0cf21160bf684a71437}{clustering}} (std\+::vector$<$ std\+::vector$<$ unsigned int $>$$>$ \&clusters, unsigned int k) const
-\begin{DoxyCompactList}\small\item\em Perform k-\/means clustering on the vertices of the graph. Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+V$^\wedge$2), where V is the number of vertices in the cluster. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classGraph_a89eb9a1b06d720c9998a85f07ab207c8}{clustering}} (std\+::vector$<$ std\+::vector$<$ unsigned int $>$ $>$ \&clusters, unsigned int k) const
+\begin{DoxyCompactList}\small\item\em Perform clustering on the vertices of the graph. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classGraph_a78e09ada85e9dc40d87366f8012a1252}{tsp\+Real\+World}} (std\+::vector$<$ unsigned int $>$ \&path) const
+\begin{DoxyCompactList}\small\item\em Solves the Travelling Salesperson Problem (TSP) using a greedy heuristic approach. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -81,15 +67,46 @@ std\+::unordered\+\_\+map$<$ unsigned, \mbox{\hyperlink{classVertex}{Vertex}}$<$
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{classGraph_a905a6e1157a4e0cf21160bf684a71437}\label{classGraph_a905a6e1157a4e0cf21160bf684a71437}} 
+\mbox{\Hypertarget{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}\label{classGraph_a3bd0cf107e642f3a8da6f41563be35f4}} 
+\index{Graph@{Graph}!aproxTSP@{aproxTSP}}
+\index{aproxTSP@{aproxTSP}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{aproxTSP()}{aproxTSP()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ Graph\+::aprox\+TSP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Computes an approximate solution to the TSP using MST and preorder traversal. Complexity O(V + E), where V is the number of vertices and E is the number of edges. 
+
+\begin{DoxyReturn}{Returns}
+A vector of \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} objects representing the approximate TSP tour. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}\label{classGraph_a214d5b9709ccc3c5fa6a0b41171f28dc}} 
+\index{Graph@{Graph}!calculateTriangular@{calculateTriangular}}
+\index{calculateTriangular@{calculateTriangular}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{calculateTriangular()}{calculateTriangular()}}
+{\footnotesize\ttfamily double Graph\+::calculate\+Triangular (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$}]{g }\end{DoxyParamCaption})}
+
+
+
+Calculates the total weight of a triangular tour through the given points. Complexity O(n), where n is the number of points in the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & A vector of \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} objects representing the points in the tour. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total weight of the triangular tour. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a89eb9a1b06d720c9998a85f07ab207c8}\label{classGraph_a89eb9a1b06d720c9998a85f07ab207c8}} 
 \index{Graph@{Graph}!clustering@{clustering}}
 \index{clustering@{clustering}!Graph@{Graph}}
 \doxysubsubsection{\texorpdfstring{clustering()}{clustering()}}
-{\footnotesize\ttfamily void Graph\+::clustering (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ unsigned int $>$$>$ \&}]{clusters,  }\item[{unsigned int}]{k }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Graph\+::clustering (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ unsigned int $>$ $>$ \&}]{clusters,  }\item[{unsigned int}]{k }\end{DoxyParamCaption}) const}
 
 
 
-Perform k-\/means clustering on the vertices of the graph. Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. 
+Perform clustering on the vertices of the graph. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -99,7 +116,25 @@ Perform k-\/means clustering on the vertices of the graph. Complexity\+: O(\+V $
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-void Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, k is the number of clusters, and T is the number of iterations until convergence. 
+void Complexity\+: O(\+V $\ast$ k), where V is the number of vertices and k is the number of clusters. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}\label{classGraph_a347f5980bd8d0e6a113196f6e3ccffef}} 
+\index{Graph@{Graph}!computeMST@{computeMST}}
+\index{computeMST@{computeMST}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{computeMST()}{computeMST()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classGraph}{Graph}} Graph\+::compute\+MST (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classVertex}{Vertex}}$<$ \mbox{\hyperlink{classNetworkPoint}{Network\+Point}} $>$ $\ast$}]{root }\end{DoxyParamCaption})}
+
+
+
+Computes the Minimum Spanning Tree of the graph starting from a given root vertex using Prim\textquotesingle{}s algorithm. Complexity O((V + E) log V), where V is the number of vertices and E is the number of edges. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em root} & A pointer to the root vertex from which to start the MST computation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{classGraph}{Graph}} representing the MST. 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}\label{classGraph_a2f2e6c233ccffcd39d00c9cb5088021b}} 
 \index{Graph@{Graph}!getNearestVertex@{getNearestVertex}}
@@ -109,7 +144,7 @@ void Complexity\+: O(\+V $\ast$ k $\ast$ T), where V is the number of vertices, 
 
 
 
-Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(\+C), where C is the number of candidates. 
+Finds the nearest vertex from a specified vertex among a set of candidates. Complexity\+: O(n), where n is the number of candidates. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -121,6 +156,30 @@ Finds the nearest vertex from a specified vertex among a set of candidates. Comp
 \begin{DoxyReturn}{Returns}
 The index of the nearest vertex from the specified vertex. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a8772e80e7715910f0622b57c62015ce4}\label{classGraph_a8772e80e7715910f0622b57c62015ce4}} 
+\index{Graph@{Graph}!haversine@{haversine}}
+\index{haversine@{haversine}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{haversine()}{haversine()}}
+{\footnotesize\ttfamily double Graph\+::haversine (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{lon1,  }\item[{double}]{lat2,  }\item[{double}]{lon2 }\end{DoxyParamCaption}) const}
+
+
+
+Calculates the Haversine distance between two points specified by latitude and longitude. Complexity O(1) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & Latitude of the first point in degrees. \\
+\hline
+{\em lon1} & Longitude of the first point in degrees. \\
+\hline
+{\em lat2} & Latitude of the second point in degrees. \\
+\hline
+{\em lon2} & Longitude of the second point in degrees. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The Haversine distance between the two points in meters. 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}\label{classGraph_abdad4adbce1ecae7201b4bda3e5a766d}} 
 \index{Graph@{Graph}!solveClusterTSP@{solveClusterTSP}}
 \index{solveClusterTSP@{solveClusterTSP}!Graph@{Graph}}
@@ -129,7 +188,7 @@ The index of the nearest vertex from the specified vertex.
 
 
 
-Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the cluster. 
+Calculates the total distance of a tour within a cluster using a greedy algorithm. Complexity\+: O(\+V$^\wedge$2), where V is the number of vertices in the cluster. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -194,7 +253,7 @@ This function attempts to find the shortest path that visits all vertices in the
 
 
 
-Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+N$^\wedge$2), where N is the number of vertices in the graph. 
+Solves the TSP using a heuristic approach based on clustering and greedy traversal. Complexity\+: O(\+V$^\wedge$2), where V is the number of vertices in the graph. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -203,6 +262,26 @@ Solves the TSP using a heuristic approach based on clustering and greedy travers
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 The total distance of the TSP tour. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGraph_a78e09ada85e9dc40d87366f8012a1252}\label{classGraph_a78e09ada85e9dc40d87366f8012a1252}} 
+\index{Graph@{Graph}!tspRealWorld@{tspRealWorld}}
+\index{tspRealWorld@{tspRealWorld}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{tspRealWorld()}{tspRealWorld()}}
+{\footnotesize\ttfamily double Graph\+::tsp\+Real\+World (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned int $>$ \&}]{path }\end{DoxyParamCaption}) const}
+
+
+
+Solves the Travelling Salesperson Problem (TSP) using a greedy heuristic approach. 
+
+This function attempts to find a Hamiltonian cycle (if one exists) in a connected graph by iteratively selecting the shortest edge to an unvisited vertex (nearest neighbour). If the graph is not connected, it returns -\/1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & A reference to a vector that will contain the order of visited vertices in the resulting TSP path, starting from the initial vertex. The initial vertex is provided as the first element in this vector. The vector is modified to include the full cycle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total distance of the TSP path. If the graph is not connected or a cycle cannot be formed, it returns -\/1. Complexity O(\+V$^\wedge$2), where V is the number of vertices. 
 \end{DoxyReturn}
 
 
