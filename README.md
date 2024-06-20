@@ -8,15 +8,5 @@ The dataset consists of 3 graph types: Toy Graphs (small size), Medium-Size Grap
 ## Class Diagram
 ![imagem](https://github.com/leonor-f/RoutingAlgorithm/assets/114422678/44e05239-370a-4362-b529-cd91d7c06789)
 
-## Execution
-To be able to run the program, the dataset must be extracted not inside the src folder, but in parent folder of src.
-The file structure must be as follows:
-- dataset/
-    - Extra_Fully_Connected_Graphs/
-    - Real-world-Graphs/
-    - Toy-Graphs/
-- src/
-    - source code of the project
-
 [Full report here](DA2024_PRJ2_G06_7.pdf).\
 [Documentation here](docs).
